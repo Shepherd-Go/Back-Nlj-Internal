@@ -7,14 +7,16 @@ import (
 )
 
 type Router struct {
-	server *echo.Echo
-	health groups.Health
+	server   *echo.Echo
+	health   groups.Health
+	employee groups.Employee
 }
 
-func NewRouter(server *echo.Echo, health groups.Health) *Router {
+func NewRouter(server *echo.Echo, health groups.Health, employee groups.Employee) *Router {
 	return &Router{
 		server,
-		health}
+		health,
+		employee}
 }
 
 func (rtr *Router) Init() {
@@ -27,5 +29,6 @@ func (rtr *Router) Init() {
 	basePath := rtr.server.Group("/api")
 
 	rtr.health.Resource(basePath)
+	rtr.employee.Resource(basePath)
 
 }

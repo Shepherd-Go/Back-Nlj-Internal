@@ -21,8 +21,10 @@ func BuildContainer() *dig.Container {
 	_ = Container.Provide(routers.NewRouter)
 
 	_ = Container.Provide(groups.NewHealthGroups)
+	_ = Container.Provide(groups.NewGroupEmployee)
 
 	_ = Container.Provide(controller.NewHealthController)
+	_ = Container.Provide(controller.NewEmployeeController)
 
 	return Container
 }
