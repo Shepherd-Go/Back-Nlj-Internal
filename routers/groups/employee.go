@@ -1,7 +1,7 @@
 package groups
 
 import (
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/controller"
+	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
 	"github.com/labstack/echo/v4"
 )
 
@@ -10,10 +10,10 @@ type Employee interface {
 }
 
 type employee struct {
-	employeeHand controller.Employee
+	employeeHand controllers.Employee
 }
 
-func NewGroupEmployee(employeeHand controller.Employee) Employee {
+func NewGroupEmployee(employeeHand controllers.Employee) Employee {
 	return &employee{employeeHand}
 }
 

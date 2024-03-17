@@ -1,7 +1,7 @@
 package groups
 
 import (
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/controller"
+	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
 	"github.com/labstack/echo/v4"
 )
 
@@ -10,10 +10,10 @@ type Health interface {
 }
 
 type health struct {
-	healthHand controller.Health
+	healthHand controllers.Health
 }
 
-func NewHealthGroups(healthHand controller.Health) Health {
+func NewHealthGroups(healthHand controllers.Health) Health {
 	return &health{healthHand}
 }
 
