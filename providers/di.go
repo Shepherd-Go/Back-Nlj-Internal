@@ -3,7 +3,7 @@ package providers
 import (
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/db"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/repository"
+	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/repository"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/routers"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/routers/groups"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/services"

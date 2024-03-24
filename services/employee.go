@@ -2,18 +2,20 @@ package services
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/models"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dto"
+	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/repository"
+	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/entity"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/repository"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/utils"
 	"github.com/labstack/echo/v4"
 )
 
 type Employee interface {
-	CreateEmployee(ctx context.Context, empl dto.EmployeeRequest) error
+	CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error
 }
 
 type employee struct {
@@ -26,14 +28,24 @@ func NewServiceEmployee(repoEmployee repository.Employee, managePass utils.Passw
 	return &employee{repoEmployee, managePass, logsError}
 }
 
-func (e *employee) CreateEmployee(ctx context.Context, empl dto.EmployeeRequest) error {
+func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error {
+
+	emplModel, err := e.repoEmployee.SearchEmployeeByEmail(ctx, empl.Email)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "An unexpected error has occurred on the server"})
+	}
+
+	if emplModel.ID != "" {
+		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: "email address not available, a user already occupies it"})
+	}
 
 	passTemporary := e.managePass.GenerateTemporaryPassword()
 	e.managePass.HashPassword(&passTemporary)
 
 	empl.Password = passTemporary
-	empl.Username = createUsername(empl.FirstName, empl.LastName, empl.Phone)
-	parsePermissions(&empl.Permissions)
+	if err = parsePermissions(&empl.Permissions); err != nil {
+		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: err.Error()})
+	}
 
 	buildEmployee := models.Employee{}
 	buildEmployee.BuildCreateEmployeeModel(empl)
@@ -46,17 +58,15 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dto.EmployeeRequest)
 	return nil
 }
 
-func createUsername(firstName, lastName, phone string) string {
-	return firstName[:3] + lastName[:3] + "-" + phone[10:]
-}
-
-func parsePermissions(permissions *string) {
+func parsePermissions(permissions *string) error {
 	switch *permissions {
-	case "administrador":
+	case "administrator":
 		*permissions = "1"
-
-	case "vendedor":
+	case "seller":
 		*permissions = "2"
+	default:
+		return errors.New("send permissions do not exist")
 	}
 
+	return nil
 }

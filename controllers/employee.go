@@ -1,9 +1,10 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dto"
+	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/entity"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/services"
 	"github.com/labstack/echo/v4"
@@ -25,11 +26,13 @@ func (e *employee) CreateEmployee(c echo.Context) error {
 
 	ctx := c.Request().Context()
 
-	empl := dto.EmployeeRequest{}
+	empl := dtos.RegisterEmployee{}
 
 	if err := c.Bind(&empl); err != nil {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})
 	}
+
+	fmt.Println(empl)
 
 	if err := empl.Validate(); err != nil {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})

@@ -1,4 +1,4 @@
-package dto
+package dtos
 
 import (
 	"context"
@@ -12,10 +12,9 @@ var (
 	conform  = modifiers.New()
 )
 
-type EmployeeRequest struct {
+type RegisterEmployee struct {
 	FirstName    string `json:"first_name" mod:"trim,lcase" validate:"required,max=15"`
 	LastName     string `json:"last_name" mod:"trim,lcase" validate:"required,max=15"`
-	Username     string `json:"username"`
 	Email        string `json:"email" mod:"trim,lcase" validate:"required,email"`
 	Phone        string `json:"phone" mod:"trim" validate:"required,len=11"`
 	Password     string `json:"password"`
@@ -25,7 +24,7 @@ type EmployeeRequest struct {
 	Payment_Card string `json:"payment_card" mod:"trim" validate:"required"`
 }
 
-func (e *EmployeeRequest) Validate() error {
+func (e *RegisterEmployee) Validate() error {
 	_ = conform.Struct(context.Background(), e)
 	return validate.Struct(e)
 }
