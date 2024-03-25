@@ -22,10 +22,10 @@ type Employee struct {
 	Cod_Bank        string
 	Pay_Phone       string
 	Payment_Card    string
-	Status          bool
+	Status          string
 	Deleted         bool
-	Created_By      uuid.UUID
-	Updated_By      uuid.UUID
+	Created_By      string
+	Updated_By      string
 	Created_At      time.Time
 	Updated_At      time.Time
 }
@@ -43,10 +43,10 @@ func (e *Employee) BuildCreateEmployeeModel(empl dtos.RegisterEmployee) {
 	e.Cod_Bank = empl.Cod_Bank
 	e.Pay_Phone = empl.Pay_Phone
 	e.Payment_Card = empl.Payment_Card
-	e.Status = true
+	e.Status = "true"
 	e.Deleted = false
-	e.Created_By = e.ID
-	e.Updated_By = e.ID
+	e.Created_By = e.ID.String()
+	e.Updated_By = e.ID.String()
 	e.Created_At = time.Now()
 	e.Updated_At = time.Now()
 }
@@ -80,6 +80,22 @@ func (e *Employees) ToDomainDTO() dtos.Employees {
 	}
 
 	return employee
+}
+
+func (e *Employee) BuildUpdatedEmployeeModel(empl dtos.UpdateEmployee, id uuid.UUID) {
+	e.FirstName = empl.FirstName
+	e.LastName = empl.LastName
+	e.Username = e.FirstName[:3] + e.LastName[:3] + "-" + id.String()[:5]
+	e.Email = empl.Email
+	e.Phone = empl.Phone
+	e.Password = []byte(empl.Password)
+	e.Permissions = empl.Permissions
+	e.Cod_Bank = empl.Cod_Bank
+	e.Pay_Phone = empl.Pay_Phone
+	e.Payment_Card = empl.Payment_Card
+	e.Status = empl.Status
+	e.Updated_By = id.String()
+	e.Updated_At = time.Now()
 }
 
 func parsePermissions(permissions string) string {

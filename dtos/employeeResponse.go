@@ -20,9 +20,9 @@ type EmployeeResponse struct {
 	Cod_Bank        string    `json:"cod_bank"`
 	Pay_Phone       string    `json:"pay_phone"`
 	Payment_Card    string    `json:"payment_card"`
-	Status          bool      `json:"status"`
-	Created_By      uuid.UUID `json:"created_by"`
-	Updated_By      uuid.UUID `json:"updated_by"`
+	Status          string    `json:"status"`
+	Created_By      string    `json:"created_by"`
+	Updated_By      string    `json:"updated_by"`
 	Created_At      time.Time `json:"created_at"`
 	Updated_At      time.Time `json:"updated_at"`
 }

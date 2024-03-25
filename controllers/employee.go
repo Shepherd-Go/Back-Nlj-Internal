@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
@@ -14,6 +13,7 @@ import (
 type Employee interface {
 	CreateEmployee(c echo.Context) error
 	GetEmployees(c echo.Context) error
+	UpdateEmployee(c echo.Context) error
 	DeleteEmployee(c echo.Context) error
 }
 
@@ -34,8 +34,6 @@ func (e *employee) CreateEmployee(c echo.Context) error {
 	if err := c.Bind(&empl); err != nil {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})
 	}
-
-	fmt.Println(empl)
 
 	if err := empl.Validate(); err != nil {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})
@@ -58,6 +56,34 @@ func (e *employee) GetEmployees(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, entity.Response{Message: "all employees ok", Data: empls})
+}
+
+func (e *employee) UpdateEmployee(c echo.Context) error {
+
+	ctx := c.Request().Context()
+
+	id := c.QueryParam("id")
+
+	idUUID, err := uuid.Parse(id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, entity.Response{Message: "format id invalid"})
+	}
+
+	empl := dtos.UpdateEmployee{}
+
+	if err := c.Bind(&empl); err != nil {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})
+	}
+
+	if err := empl.Validate(); err != nil {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})
+	}
+
+	if err = e.emplService.UpdateEmployees(ctx, idUUID, empl); err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, entity.Response{Message: "employee updated successfully.!!"})
 }
 
 func (e *employee) DeleteEmployee(c echo.Context) error {

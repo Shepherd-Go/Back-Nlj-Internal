@@ -23,6 +23,7 @@ func (e *employee) Resource(g *echo.Group) {
 
 	groupPath.POST("/create", e.employeeHand.CreateEmployee)
 	groupPath.GET("/all", e.employeeHand.GetEmployees)
+	groupPath.PUT("/update", e.employeeHand.UpdateEmployee)
 	groupPath.DELETE("/delete", e.employeeHand.DeleteEmployee)
 
 }
