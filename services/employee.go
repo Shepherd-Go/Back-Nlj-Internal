@@ -8,6 +8,7 @@ import (
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/models"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/repository"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+	"github.com/google/uuid"
 
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/entity"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/utils"
@@ -16,6 +17,7 @@ import (
 
 type Employee interface {
 	CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error
+	GetEmployees(ctx context.Context) (dtos.Employees, error)
 }
 
 type employee struct {
@@ -32,10 +34,10 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 
 	emplModel, err := e.repoEmployee.SearchEmployeeByEmail(ctx, empl.Email)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "An unexpected error has occurred on the server"})
+		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
 	}
 
-	if emplModel.ID != "" {
+	if emplModel.ID != uuid.Nil {
 		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: "email address not available, a user already occupies it"})
 	}
 
@@ -52,10 +54,20 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 
 	if err := e.repoEmployee.CreateEmployee(ctx, buildEmployee); err != nil {
 		e.logsError.InsertLogsError(err)
-		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "An unexpected error has occurred on the server"})
+		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
 	}
 
 	return nil
+}
+
+func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
+
+	empls, err := e.repoEmployee.SearchAllEmployees(ctx)
+	if err != nil {
+		return dtos.Employees{}, echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
+	}
+
+	return empls, nil
 }
 
 func parsePermissions(permissions *string) error {

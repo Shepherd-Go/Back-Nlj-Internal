@@ -1,11 +1,15 @@
 package dtos
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Employees []EmployeeResponse
 
 type EmployeeResponse struct {
-	ID              string    `json:"id"`
+	ID              uuid.UUID `json:"id"`
 	FirstName       string    `json:"first_name"`
 	LastName        string    `json:"last_name"`
 	Username        string    `json:"username"`
@@ -17,8 +21,8 @@ type EmployeeResponse struct {
 	Pay_Phone       string    `json:"pay_phone"`
 	Payment_Card    string    `json:"payment_card"`
 	Status          bool      `json:"status"`
-	Created_By      string    `json:"created_by"`
-	Updated_By      string    `json:"updated_by"`
+	Created_By      uuid.UUID `json:"created_by"`
+	Updated_By      uuid.UUID `json:"updated_by"`
 	Created_At      time.Time `json:"created_at"`
 	Updated_At      time.Time `json:"updated_at"`
 }

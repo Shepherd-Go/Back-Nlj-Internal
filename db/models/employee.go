@@ -10,7 +10,7 @@ import (
 type Employees []Employee
 
 type Employee struct {
-	ID              string
+	ID              uuid.UUID
 	FirstName       string
 	LastName        string
 	Username        string
@@ -24,17 +24,17 @@ type Employee struct {
 	Payment_Card    string
 	Status          bool
 	Deleted         bool
-	Created_By      string
-	Updated_By      string
+	Created_By      uuid.UUID
+	Updated_By      uuid.UUID
 	Created_At      time.Time
 	Updated_At      time.Time
 }
 
 func (e *Employee) BuildCreateEmployeeModel(empl dtos.RegisterEmployee) {
-	e.ID = uuid.NewString()
+	e.ID = uuid.New()
 	e.FirstName = empl.FirstName
 	e.LastName = empl.LastName
-	e.Username = e.FirstName[:3] + e.LastName[:3] + "-" + e.ID[:5]
+	e.Username = e.FirstName[:3] + e.LastName[:3] + "-" + e.ID.String()[:5]
 	e.Email = empl.Email
 	e.Phone = empl.Phone
 	e.Password = []byte(empl.Password)
@@ -59,7 +59,7 @@ func (e *Employee) ToDomainDTO() dtos.EmployeeResponse {
 		Username:        e.Username,
 		Email:           e.Email,
 		Phone:           e.Phone,
-		Permissions:     e.Permissions,
+		Permissions:     parsePermissions(e.Permissions),
 		Confirmed_Email: e.Confirmed_Email,
 		Cod_Bank:        e.Cod_Bank,
 		Pay_Phone:       e.Pay_Phone,
@@ -80,4 +80,15 @@ func (e *Employees) ToDomainDTO() dtos.Employees {
 	}
 
 	return employee
+}
+
+func parsePermissions(permissions string) string {
+	switch permissions {
+	case "1":
+		return "administrator"
+	case "2":
+		return "seller"
+	default:
+		return ""
+	}
 }

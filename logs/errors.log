@@ -12,3 +12,4 @@
 2024/03/18 23:19:15 ERROR: value too long for type character varying(15) (SQLSTATE 22001)
 2024/03/24 19:09:40 ERROR: column "delete" of relation "employees" does not exist (SQLSTATE 42703)
 2024/03/24 19:11:30 ERROR: invalid input syntax for type integer: "administradores" (SQLSTATE 22P02)
+2024/03/24 20:56:00 ERROR: invalid input syntax for type uuid: "Domain81" (SQLSTATE 22P02)

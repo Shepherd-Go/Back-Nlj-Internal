@@ -12,6 +12,7 @@ import (
 
 type Employee interface {
 	CreateEmployee(c echo.Context) error
+	GetEmployees(c echo.Context) error
 }
 
 type employee struct {
@@ -43,4 +44,16 @@ func (e *employee) CreateEmployee(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusCreated, entity.Response{Message: "employee created successfully.!!"})
+}
+
+func (e *employee) GetEmployees(c echo.Context) error {
+
+	ctx := c.Request().Context()
+
+	empls, err := e.emplService.GetEmployees(ctx)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, entity.Response{Message: "all employees ok", Data: empls})
 }

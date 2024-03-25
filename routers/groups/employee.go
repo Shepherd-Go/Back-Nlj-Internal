@@ -22,5 +22,6 @@ func (e *employee) Resource(g *echo.Group) {
 	groupPath := g.Group("/employee")
 
 	groupPath.POST("", e.employeeHand.CreateEmployee)
+	groupPath.GET("", e.employeeHand.GetEmployees)
 
 }
