@@ -18,6 +18,7 @@ import (
 type Employee interface {
 	CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error
 	GetEmployees(ctx context.Context) (dtos.Employees, error)
+	DeleteEmployee(ctx context.Context, id uuid.UUID) error
 }
 
 type employee struct {
@@ -68,6 +69,24 @@ func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 	}
 
 	return empls, nil
+}
+
+func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID) error {
+
+	emplModel, err := e.repoEmployee.SearchEmployeeByID(ctx, id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
+	}
+
+	if emplModel.ID == uuid.Nil {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: "there is no employee with this id"})
+	}
+
+	if err := e.repoEmployee.DeleteEmployee(ctx, id); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
+	}
+
+	return nil
 }
 
 func parsePermissions(permissions *string) error {
