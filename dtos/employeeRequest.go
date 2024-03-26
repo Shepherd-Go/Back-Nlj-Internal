@@ -28,8 +28,7 @@ type UpdateEmployee struct {
 	FirstName    string `json:"first_name" mod:"trim,lcase" validate:"required,max=15"`
 	LastName     string `json:"last_name" mod:"trim,lcase" validate:"required,max=15"`
 	Email        string `json:"email" mod:"trim,lcase" validate:"required,email"`
-	Phone        string `json:"phone" mod:"trim" validate:"required,len=11"`
-	Password     string `json:"password" mod:"trim" validate:"required,min=8,max=15"`
+	Phone        string `json:"phone" mod:"trim" validate:"required,len=11"
 	Permissions  string `json:"permissions" mod:"trim" validate:"required"`
 	Cod_Bank     string `json:"cod_bank" mod:"trim" validate:"required"`
 	Pay_Phone    string `json:"pay_phone" mod:"trim" validate:"required,len=11"`

@@ -14,6 +14,7 @@ type EmployeeResponse struct {
 	LastName        string    `json:"last_name"`
 	Username        string    `json:"username"`
 	Email           string    `json:"email"`
+	Password        []byte    `json:"password,omitempty"`
 	Phone           string    `json:"phone"`
 	Permissions     string    `json:"permissios"`
 	Confirmed_Email bool      `json:"confirmed_email"`

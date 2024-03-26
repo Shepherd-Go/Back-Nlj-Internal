@@ -6,6 +6,7 @@ require (
 	github.com/andresxlp/gosuite v0.2.2-alpha
 	github.com/go-playground/mold v2.2.0+incompatible
 	github.com/go-playground/validator/v10 v10.19.0
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0
 	github.com/labstack/echo/v4 v4.11.4
 	go.uber.org/dig v1.17.1

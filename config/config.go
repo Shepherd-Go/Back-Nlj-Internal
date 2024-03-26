@@ -15,11 +15,16 @@ var (
 
 type Config struct {
 	Server   Server   `validate:"required" mapstructure:"server"`
+	JWT      JWT      `validate:"required" mapstructure:"jwt"`
 	Database Database `validate:"required" mapstructure:"database"`
 }
 
 type Server struct {
 	Port int `validate:"required" mapstructure:"port"`
+}
+
+type JWT struct {
+	Key string `validate:"required" mapstructure:"key"`
 }
 
 type Database struct {

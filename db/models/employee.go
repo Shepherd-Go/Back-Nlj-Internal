@@ -59,6 +59,7 @@ func (e *Employee) ToDomainDTO() dtos.EmployeeResponse {
 		Username:        e.Username,
 		Email:           e.Email,
 		Phone:           e.Phone,
+		Password:        e.Password,
 		Permissions:     parsePermissions(e.Permissions),
 		Confirmed_Email: e.Confirmed_Email,
 		Cod_Bank:        e.Cod_Bank,
@@ -88,7 +89,6 @@ func (e *Employee) BuildUpdatedEmployeeModel(empl dtos.UpdateEmployee, id uuid.U
 	e.Username = e.FirstName[:3] + e.LastName[:3] + "-" + id.String()[:5]
 	e.Email = empl.Email
 	e.Phone = empl.Phone
-	e.Password = []byte(empl.Password)
 	e.Permissions = empl.Permissions
 	e.Cod_Bank = empl.Cod_Bank
 	e.Pay_Phone = empl.Pay_Phone

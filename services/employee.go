@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/models"
@@ -44,6 +45,7 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 	}
 
 	passTemporary := e.managePass.GenerateTemporaryPassword()
+	fmt.Println(passTemporary)
 	e.managePass.HashPassword(&passTemporary)
 	empl.Password = passTemporary
 
@@ -93,8 +95,6 @@ func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.
 			return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: "email address not available, a user already occupies it"})
 		}
 	}
-
-	e.managePass.HashPassword(&empl.Password)
 
 	if err = parsePermissions(&empl.Permissions); err != nil {
 		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: err.Error()})

@@ -8,7 +8,7 @@ import (
 
 type Password interface {
 	HashPassword(password *string)
-	CheckPasswordHash(password, hash string) bool
+	CheckPasswordHash(phash []byte, password string) bool
 	GenerateTemporaryPassword() string
 }
 
@@ -19,13 +19,12 @@ func NewHashPassword() Password {
 }
 
 func (p *password) HashPassword(password *string) {
-	hash, _ := bcrypt.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
+	hash, _ := bcrypt.GenerateFromPassword([]byte(*password), 14)
 	*password = string(hash)
 }
 
-func (p *password) CheckPasswordHash(hash, password string) bool {
+func (p *password) CheckPasswordHash(hash []byte, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-
 	return err == nil
 }
 
