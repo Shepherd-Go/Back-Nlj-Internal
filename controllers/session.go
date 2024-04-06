@@ -53,6 +53,7 @@ func (s *session) Session(c echo.Context) error {
 		Secure:   true,
 		SameSite: http.SameSiteNoneMode,
 		HttpOnly: true,
+		Path:     "/",
 	}
 
 	c.SetCookie(cookie)

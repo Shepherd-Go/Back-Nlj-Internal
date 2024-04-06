@@ -18,19 +18,24 @@ type Employee struct {
 	Phone           string
 	Password        []byte
 	Permissions     string
-	Confirmed_Email bool
-	Cod_Bank        string
+	Confirmed_Email *bool
+	Code_Bank       string
 	Pay_Phone       string
 	Payment_Card    string
-	Status          string
-	Deleted         bool
+	Status          *bool
+	Deleted         *bool
 	Created_By      string
 	Updated_By      string
-	Created_At      time.Time
-	Updated_At      time.Time
+	Deleted_By      *string
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
+	DeletedAt       *time.Time
 }
 
 func (e *Employee) BuildCreateEmployeeModel(empl dtos.RegisterEmployee) {
+
+	isFalse, isTrue := false, true
+
 	e.ID = uuid.New()
 	e.FirstName = empl.FirstName
 	e.LastName = empl.LastName
@@ -39,16 +44,14 @@ func (e *Employee) BuildCreateEmployeeModel(empl dtos.RegisterEmployee) {
 	e.Phone = empl.Phone
 	e.Password = []byte(empl.Password)
 	e.Permissions = empl.Permissions
-	e.Confirmed_Email = false
-	e.Cod_Bank = empl.Cod_Bank
+	e.Confirmed_Email = &isFalse
+	e.Code_Bank = empl.Code_Bank
 	e.Pay_Phone = empl.Pay_Phone
 	e.Payment_Card = empl.Payment_Card
-	e.Status = "true"
-	e.Deleted = false
+	e.Status = &isTrue
+	e.Deleted = &isFalse
 	e.Created_By = e.ID.String()
 	e.Updated_By = e.ID.String()
-	e.Created_At = time.Now()
-	e.Updated_At = time.Now()
 }
 
 func (e *Employee) ToDomainDTO() dtos.EmployeeResponse {
@@ -61,15 +64,15 @@ func (e *Employee) ToDomainDTO() dtos.EmployeeResponse {
 		Phone:           e.Phone,
 		Password:        e.Password,
 		Permissions:     parsePermissions(e.Permissions),
-		Confirmed_Email: e.Confirmed_Email,
-		Cod_Bank:        e.Cod_Bank,
+		Confirmed_Email: *e.Confirmed_Email,
+		Code_Bank:       e.Code_Bank,
 		Pay_Phone:       e.Pay_Phone,
 		Payment_Card:    e.Payment_Card,
-		Status:          e.Status,
+		Status:          *e.Status,
 		Created_By:      e.Created_By,
 		Updated_By:      e.Updated_By,
-		Created_At:      e.Created_At,
-		Updated_At:      e.Updated_At,
+		Created_At:      e.CreatedAt,
+		Updated_At:      e.UpdatedAt,
 	}
 }
 
@@ -86,16 +89,15 @@ func (e *Employees) ToDomainDTO() dtos.Employees {
 func (e *Employee) BuildUpdatedEmployeeModel(empl dtos.UpdateEmployee, id uuid.UUID) {
 	e.FirstName = empl.FirstName
 	e.LastName = empl.LastName
-	e.Username = e.FirstName[:3] + e.LastName[:3] + "-" + id.String()[:5]
+	e.Username = e.FirstName[:3] + e.LastName[:3] + "-" + empl.ID.String()[:5]
 	e.Email = empl.Email
 	e.Phone = empl.Phone
 	e.Permissions = empl.Permissions
-	e.Cod_Bank = empl.Cod_Bank
+	e.Code_Bank = empl.Code_Bank
 	e.Pay_Phone = empl.Pay_Phone
 	e.Payment_Card = empl.Payment_Card
 	e.Status = empl.Status
 	e.Updated_By = id.String()
-	e.Updated_At = time.Now()
 }
 
 func parsePermissions(permissions string) string {
