@@ -40,6 +40,10 @@ func (s *session) Session(ctx context.Context, login dtos.Login) (dtos.EmployeeR
 		return dtos.EmployeeResponse{}, echo.NewHTTPError(http.StatusNotFound, entity.Response{Message: "incorrect access data"})
 	}
 
+	if !*empl.Status {
+		return dtos.EmployeeResponse{}, echo.NewHTTPError(http.StatusForbidden, entity.Response{Message: "inactive employee"})
+	}
+
 	empl.Password = nil
 
 	return empl, nil
