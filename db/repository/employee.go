@@ -39,12 +39,12 @@ func (e *employee) CreateEmployee(ctx context.Context, empl models.Employee) err
 
 func (e *employee) SearchEmployeeByID(ctx context.Context, id uuid.UUID) (dtos.EmployeeResponse, error) {
 
-	empl := models.Employee{}
+	empl := &models.Employee{}
 
 	if err := e.db.WithContext(ctx).Table("employees e").
 		Where("e.id=?", id).Not("e.deleted=?", true).
 		Select("e.id, e.first_name, e.last_name, e.username, e.email, e.phone, e.permissions, e.confirmed_email, e.code_bank, e.pay_phone, e.payment_card, e.status, e.created_by, e.updated_by, e.created_at, e.updated_at").
-		Scan(&empl).Error; err != nil {
+		Scan(empl).Error; err != nil {
 		return dtos.EmployeeResponse{}, err
 	}
 

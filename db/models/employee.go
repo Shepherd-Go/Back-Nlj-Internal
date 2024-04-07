@@ -64,11 +64,11 @@ func (e *Employee) ToDomainDTO() dtos.EmployeeResponse {
 		Phone:           e.Phone,
 		Password:        e.Password,
 		Permissions:     parsePermissions(e.Permissions),
-		Confirmed_Email: *e.Confirmed_Email,
+		Confirmed_Email: e.Confirmed_Email,
 		Code_Bank:       e.Code_Bank,
 		Pay_Phone:       e.Pay_Phone,
 		Payment_Card:    e.Payment_Card,
-		Status:          *e.Status,
+		Status:          e.Status,
 		Created_By:      e.Created_By,
 		Updated_By:      e.Updated_By,
 		Created_At:      e.CreatedAt,
@@ -96,7 +96,7 @@ func (e *Employee) BuildUpdatedEmployeeModel(empl dtos.UpdateEmployee, id uuid.U
 	e.Code_Bank = empl.Code_Bank
 	e.Pay_Phone = empl.Pay_Phone
 	e.Payment_Card = empl.Payment_Card
-	e.Status = empl.Status
+	e.Status = &empl.Status
 	e.Updated_By = id.String()
 }
 

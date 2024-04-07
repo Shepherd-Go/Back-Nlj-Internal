@@ -76,11 +76,11 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 
 func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 
-	permissions := ctx.Value("permissions")
+	/*permissions := ctx.Value("permissions")
 
 	if permissions != "administrator" {
 		return dtos.Employees{}, echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
-	}
+	}*/
 
 	empls, err := e.repoEmployee.SearchAllEmployees(ctx)
 	if err != nil {

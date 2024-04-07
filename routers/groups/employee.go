@@ -2,7 +2,6 @@ package groups
 
 import (
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/middleware"
 	"github.com/labstack/echo/v4"
 )
 
@@ -11,20 +10,19 @@ type Employee interface {
 }
 
 type employee struct {
-	jwt          middleware.TokenMiddleware
 	employeeHand controllers.Employee
 }
 
-func NewGroupEmployee(jwt middleware.TokenMiddleware, employeeHand controllers.Employee) Employee {
-	return &employee{jwt, employeeHand}
+func NewGroupEmployee(employeeHand controllers.Employee) Employee {
+	return &employee{employeeHand}
 }
 
 func (e *employee) Resource(g *echo.Group) {
 
 	groupPath := g.Group("/employee")
 
-	groupPath.POST("/create", e.employeeHand.CreateEmployee, e.jwt.Employee)
-	groupPath.GET("/all", e.employeeHand.GetEmployees, e.jwt.Employee)
+	groupPath.POST("/create", e.employeeHand.CreateEmployee)
+	groupPath.GET("/all", e.employeeHand.GetEmployees)
 	groupPath.PUT("/update", e.employeeHand.UpdateEmployee)
 	groupPath.DELETE("/delete", e.employeeHand.DeleteEmployee)
 
