@@ -35,12 +35,12 @@ func NewServiceEmployee(repoEmployee repository.Employee, managePass utils.Passw
 
 func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error {
 
-	/*id := ctx.Value("id").(string)
+	id := ctx.Value("id").(string)
 	permissions := ctx.Value("permissions").(string)
 
 	if permissions != "administrator" {
 		return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
-	}*/
+	}
 
 	emplModel, err := e.repoEmployee.SearchEmployeeByEmail(ctx, empl.Email)
 	if err != nil {
@@ -60,8 +60,7 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: err.Error()})
 	}
 
-	//empl.Created_by = id
-	//empl.Updated_by = id
+	empl.Created_by, empl.Updated_by = id, id
 
 	buildEmployee := models.Employee{}
 	buildEmployee.BuildCreateEmployeeModel(empl)
@@ -76,11 +75,11 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 
 func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 
-	/*permissions := ctx.Value("permissions")
+	permissions := ctx.Value("permissions")
 
 	if permissions != "administrator" {
 		return dtos.Employees{}, echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
-	}*/
+	}
 
 	empls, err := e.repoEmployee.SearchAllEmployees(ctx)
 	if err != nil {
@@ -92,12 +91,12 @@ func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 
 func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.UpdateEmployee) error {
 
-	/*idToken := ctx.Value("id").(string)
+	idToken := ctx.Value("id").(string)
 	permissions := ctx.Value("permissions")
 
 	if permissions != "administrator" {
 		return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
-	}*/
+	}
 
 	emplModel, err := e.repoEmployee.SearchEmployeeByID(ctx, id)
 	if err != nil {
@@ -124,9 +123,9 @@ func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.
 	}
 
 	empl.ID = id
-	//empl.Updated_by = idToken
+	empl.Updated_by = idToken
 	buildModelEmploye := models.Employee{}
-	buildModelEmploye.BuildUpdatedEmployeeModel(empl, id)
+	buildModelEmploye.BuildUpdatedEmployeeModel(empl)
 
 	if err := e.repoEmployee.UpdateEmployee(ctx, buildModelEmploye, id); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})

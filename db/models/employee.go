@@ -50,8 +50,8 @@ func (e *Employee) BuildCreateEmployeeModel(empl dtos.RegisterEmployee) {
 	e.Payment_Card = empl.Payment_Card
 	e.Status = &isTrue
 	e.Deleted = &isFalse
-	e.Created_By = e.ID.String()
-	e.Updated_By = e.ID.String()
+	e.Created_By = empl.Created_by
+	e.Updated_By = empl.Updated_by
 }
 
 func (e *Employee) ToDomainDTO() dtos.EmployeeResponse {
@@ -86,7 +86,7 @@ func (e *Employees) ToDomainDTO() dtos.Employees {
 	return employee
 }
 
-func (e *Employee) BuildUpdatedEmployeeModel(empl dtos.UpdateEmployee, id uuid.UUID) {
+func (e *Employee) BuildUpdatedEmployeeModel(empl dtos.UpdateEmployee) {
 	e.FirstName = empl.FirstName
 	e.LastName = empl.LastName
 	e.Username = e.FirstName[:3] + e.LastName[:3] + "-" + empl.ID.String()[:5]
@@ -96,8 +96,8 @@ func (e *Employee) BuildUpdatedEmployeeModel(empl dtos.UpdateEmployee, id uuid.U
 	e.Code_Bank = empl.Code_Bank
 	e.Pay_Phone = empl.Pay_Phone
 	e.Payment_Card = empl.Payment_Card
-	e.Status = &empl.Status
-	e.Updated_By = id.String()
+	e.Status = empl.Status
+	e.Updated_By = empl.Updated_by
 }
 
 func parsePermissions(permissions string) string {

@@ -37,7 +37,7 @@ type UpdateEmployee struct {
 	Code_Bank    string    `json:"code_bank" mod:"trim" validate:"required"`
 	Pay_Phone    string    `json:"pay_phone" mod:"trim" validate:"required,len=11"`
 	Payment_Card string    `json:"payment_card" mod:"trim" validate:"required"`
-	Status       bool      `json:"status" mod:"trim" validate:"required,boolean"`
+	Status       *bool     `json:"status" mod:"trim" validate:"required,boolean"`
 	Updated_by   string    `json:"updated_by"`
 }
 
