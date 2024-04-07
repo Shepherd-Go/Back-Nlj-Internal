@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/models"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
@@ -17,7 +18,7 @@ type Employee interface {
 	SearchEmployeByEmailOrUsername(ctx context.Context, identifier string) (dtos.EmployeeResponse, error)
 	SearchAllEmployees(ctx context.Context) (dtos.Employees, error)
 	UpdateEmployee(ctx context.Context, empl models.Employee, id uuid.UUID) error
-	DeleteEmployee(ctx context.Context, id uuid.UUID) error
+	DeleteEmployee(ctx context.Context, id uuid.UUID, idToken string) error
 }
 
 type employee struct {
@@ -117,9 +118,9 @@ func (e *employee) UpdateEmployee(ctx context.Context, empl models.Employee, id 
 	return nil
 }
 
-func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID) error {
+func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID, idToken string) error {
 
-	if err := e.db.WithContext(ctx).Table("employees").Where("id=?", id).Update("deleted", true).Error; err != nil {
+	if err := e.db.WithContext(ctx).Table("employees").Where("id=?", id).Updates(map[string]interface{}{"deleted": true, "deleted_by": idToken, "deleted_at": time.Now()}).Error; err != nil {
 		return err
 	}
 
