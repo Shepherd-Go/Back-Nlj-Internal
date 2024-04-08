@@ -1,5 +1,7 @@
 package config
 
+// mockery --all --disable-version-string --keeptree ----> comando para generar mocks automaticos...
+
 import (
 	"log"
 	"os"
