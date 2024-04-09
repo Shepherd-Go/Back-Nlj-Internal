@@ -29,10 +29,11 @@ func (rtr *Router) Init() {
 	}))
 
 	rtr.server.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins:     []string{"http://127.0.0.1:5500", "*"},
-		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
-		AllowHeaders:     []string{echo.HeaderContentType},
-		AllowCredentials: true,
+		AllowOrigins:                             []string{"http://127.0.0.1:5500", "https://10.240.1.34:5173", "https://10.240.1.34", "*"},
+		AllowMethods:                             []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+		AllowHeaders:                             []string{echo.HeaderContentType},
+		AllowCredentials:                         true,
+		UnsafeWildcardOriginWithAllowCredentials: true,
 	}))
 
 	rtr.server.Use(middleware.Recover())
