@@ -25,6 +25,7 @@ var (
 	idEmployee = uuid.MustParse("37a35c67-4953-468f-8d9a-75d4bd0c673b")
 
 	dataCreateEmployeeIsCorrect = dtos.RegisterEmployee{
+		ID:           idEmployee,
 		FirstName:    "test",
 		LastName:     "test",
 		Email:        "test@test.net",
@@ -34,8 +35,8 @@ var (
 		Code_Bank:    "test",
 		Pay_Phone:    "00000000000",
 		Payment_Card: "00000000",
-		Created_by:   "testa",
-		Updated_by:   "testa",
+		Created_by:   "37a35c67-4953-468f-8d9a-75d4bd0c673b",
+		Updated_by:   "37a35c67-4953-468f-8d9a-75d4bd0c673b",
 	}
 
 	dataUpdateEmployeeIsCorrect = dtos.UpdateEmployee{
@@ -140,7 +141,7 @@ func (suite *EmployeeServiceTestSuite) TestCreate_WhenParsePermissionsFail() {
 
 }
 
-/*func (suite *EmployeeServiceTestSuite) TestCreate_WhenCreateEmployeeFail() {
+func (suite *EmployeeServiceTestSuite) TestCreate_WhenCreateEmployeeFail() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
 	ctx = context.WithValue(ctx, permissionsKey, "administrator")
@@ -155,12 +156,38 @@ func (suite *EmployeeServiceTestSuite) TestCreate_WhenParsePermissionsFail() {
 	buildEmployee := models.Employee{}
 	buildEmployee.BuildCreateEmployeeModel(dataCreateEmployeeIsCorrect)
 
+	buildEmployee.Permissions = "1"
+
 	suite.repo.Mock.On("CreateEmployee", ctx, buildEmployee).
 		Return(err)
 
+	suite.Error(suite.underTest.CreateEmployee(ctx, dataCreateEmployeeIsCorrect))
+
+}
+
+func (suite *EmployeeServiceTestSuite) TestCreate_WhenCreateEmployeeSuccess() {
+
+	ctx = context.WithValue(ctx, idKey, idEmployee.String())
+	ctx = context.WithValue(ctx, permissionsKey, "administrator")
+
+	suite.repo.Mock.On("SearchEmployeeByEmail", ctx, dataCreateEmployeeIsCorrect.Email).
+		Return(dtos.EmployeeResponse{ID: uuid.Nil}, nil)
+
+	suite.pass.Mock.On("GenerateTemporaryPassword").
+		Return("testtest")
+	suite.pass.Mock.On("HashPassword", &dataCreateEmployeeIsCorrect.Password)
+
+	buildEmployee := models.Employee{}
+	buildEmployee.BuildCreateEmployeeModel(dataCreateEmployeeIsCorrect)
+
+	buildEmployee.Permissions = "1"
+
+	suite.repo.Mock.On("CreateEmployee", ctx, buildEmployee).
+		Return(nil)
+
 	suite.NoError(suite.underTest.CreateEmployee(ctx, dataCreateEmployeeIsCorrect))
 
-}*/
+}
 
 func (suite *EmployeeServiceTestSuite) TestGet_WhenEmployeeNotPermissions() {
 

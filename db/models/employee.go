@@ -36,7 +36,7 @@ func (e *Employee) BuildCreateEmployeeModel(empl dtos.RegisterEmployee) {
 
 	isFalse, isTrue := false, true
 
-	e.ID = uuid.New()
+	e.ID = empl.ID
 	e.FirstName = empl.FirstName
 	e.LastName = empl.LastName
 	e.Username = e.FirstName[:3] + e.LastName[:3] + "-" + e.ID.String()[:5]

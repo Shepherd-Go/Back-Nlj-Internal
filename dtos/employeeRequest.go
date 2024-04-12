@@ -14,17 +14,18 @@ var (
 )
 
 type RegisterEmployee struct {
-	FirstName    string `json:"first_name" mod:"trim,lcase" validate:"required,max=15"`
-	LastName     string `json:"last_name" mod:"trim,lcase" validate:"required,max=15"`
-	Email        string `json:"email" mod:"trim,lcase" validate:"required,email"`
-	Phone        string `json:"phone" mod:"trim" validate:"required,len=11"`
-	Password     string `json:"password"`
-	Permissions  string `json:"permissions" mod:"trim" validate:"required"`
-	Code_Bank    string `json:"code_bank" mod:"trim" validate:"required"`
-	Pay_Phone    string `json:"pay_phone" mod:"trim" validate:"required,len=11"`
-	Payment_Card string `json:"payment_card" mod:"trim" validate:"required"`
-	Created_by   string `json:"created_by_by"`
-	Updated_by   string `json:"updated_by"`
+	ID           uuid.UUID `json:"id" mod:"trim" validate:"required,uuid4"`
+	FirstName    string    `json:"first_name" mod:"trim,lcase" validate:"required,max=15"`
+	LastName     string    `json:"last_name" mod:"trim,lcase" validate:"required,max=15"`
+	Email        string    `json:"email" mod:"trim,lcase" validate:"required,email"`
+	Phone        string    `json:"phone" mod:"trim" validate:"required,len=11"`
+	Password     string    `json:"password"`
+	Permissions  string    `json:"permissions" mod:"trim" validate:"required"`
+	Code_Bank    string    `json:"code_bank" mod:"trim" validate:"required"`
+	Pay_Phone    string    `json:"pay_phone" mod:"trim" validate:"required,len=11"`
+	Payment_Card string    `json:"payment_card" mod:"trim" validate:"required"`
+	Created_by   string    `json:"created_by_by"`
+	Updated_by   string    `json:"updated_by"`
 }
 
 type UpdateEmployee struct {

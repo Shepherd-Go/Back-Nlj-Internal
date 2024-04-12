@@ -66,7 +66,6 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 	buildEmployee.BuildCreateEmployeeModel(empl)
 
 	if err := e.repoEmployee.CreateEmployee(ctx, buildEmployee); err != nil {
-		e.logsError.InsertLogsError(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
 	}
 
