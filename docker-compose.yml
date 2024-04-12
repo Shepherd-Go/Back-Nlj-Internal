@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  backnljinternal:
+    image: back-nlj-internal
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "$SERVER_PORT:$SERVER_PORT"
+    env_file:
+      - .env
+  db:
+    image: postgres
+    container_name: db-pg-internal
+    environment:
+      - "POSTGRES_USER=$DATABASE_USER"
+      - "POSTGRES_PASSWORD=$DATABASE_PASSWORD"
+      - "POSTGRES_DB=$DATABASE_DBNAME"
+    ports:
+      - 5432:5432
+
+
+

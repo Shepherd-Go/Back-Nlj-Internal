@@ -4,6 +4,7 @@ import (
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/db"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/repository"
+	"github.com/BBCompanyca/Back-Nlj-Internal.git/middleware"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/routers"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/routers/groups"
 	"github.com/BBCompanyca/Back-Nlj-Internal.git/services"
@@ -22,9 +23,11 @@ func BuildContainer() *dig.Container {
 		return echo.New()
 	})
 
-	_ = Container.Provide(db.NewPostgresConnection)
+	_ = Container.Provide(middleware.NewJwtMiddleware)
 
 	_ = Container.Provide(routers.NewRouter)
+
+	_ = Container.Provide(db.NewPostgresConnection)
 
 	_ = Container.Provide(utils.NewHashPassword)
 	_ = Container.Provide(utils.NewLogsError)

@@ -17,11 +17,11 @@ type EmployeeResponse struct {
 	Password        []byte    `json:"password,omitempty"`
 	Phone           string    `json:"phone"`
 	Permissions     string    `json:"permissios"`
-	Confirmed_Email bool      `json:"confirmed_email"`
-	Cod_Bank        string    `json:"cod_bank"`
+	Confirmed_Email *bool     `json:"confirmed_email"`
+	Code_Bank       string    `json:"code_bank"`
 	Pay_Phone       string    `json:"pay_phone"`
 	Payment_Card    string    `json:"payment_card"`
-	Status          string    `json:"status"`
+	Status          *bool     `json:"status"`
 	Created_By      string    `json:"created_by"`
 	Updated_By      string    `json:"updated_by"`
 	Created_At      time.Time `json:"created_at"`

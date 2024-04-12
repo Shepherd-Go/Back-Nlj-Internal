@@ -35,6 +35,13 @@ func NewServiceEmployee(repoEmployee repository.Employee, managePass utils.Passw
 
 func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error {
 
+	id := ctx.Value("id").(string)
+	permissions := ctx.Value("permissions").(string)
+
+	if permissions != "administrator" {
+		return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
+	}
+
 	emplModel, err := e.repoEmployee.SearchEmployeeByEmail(ctx, empl.Email)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
@@ -53,11 +60,12 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: err.Error()})
 	}
 
+	empl.Created_by, empl.Updated_by = id, id
+
 	buildEmployee := models.Employee{}
 	buildEmployee.BuildCreateEmployeeModel(empl)
 
 	if err := e.repoEmployee.CreateEmployee(ctx, buildEmployee); err != nil {
-		e.logsError.InsertLogsError(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
 	}
 
@@ -65,6 +73,12 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 }
 
 func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
+
+	permissions := ctx.Value("permissions")
+
+	if permissions != "administrator" {
+		return dtos.Employees{}, echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
+	}
 
 	empls, err := e.repoEmployee.SearchAllEmployees(ctx)
 	if err != nil {
@@ -75,6 +89,13 @@ func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 }
 
 func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.UpdateEmployee) error {
+
+	idToken := ctx.Value("id").(string)
+	permissions := ctx.Value("permissions")
+
+	if permissions != "administrator" {
+		return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
+	}
 
 	emplModel, err := e.repoEmployee.SearchEmployeeByID(ctx, id)
 	if err != nil {
@@ -100,8 +121,10 @@ func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.
 		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: err.Error()})
 	}
 
+	empl.ID = id
+	empl.Updated_by = idToken
 	buildModelEmploye := models.Employee{}
-	buildModelEmploye.BuildUpdatedEmployeeModel(empl, id)
+	buildModelEmploye.BuildUpdatedEmployeeModel(empl)
 
 	if err := e.repoEmployee.UpdateEmployee(ctx, buildModelEmploye, id); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
@@ -112,6 +135,17 @@ func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.
 
 func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID) error {
 
+	idToken := ctx.Value("id").(string)
+	permissions := ctx.Value("permissions")
+
+	if permissions != "administrator" {
+		return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
+	}
+
+	if idToken == id.String() {
+		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: "you cannot delete your own account"})
+	}
+
 	emplModel, err := e.repoEmployee.SearchEmployeeByID(ctx, id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
@@ -121,7 +155,7 @@ func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID) error {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: "there is no employee with this id"})
 	}
 
-	if err := e.repoEmployee.DeleteEmployee(ctx, id); err != nil {
+	if err := e.repoEmployee.DeleteEmployee(ctx, id, idToken); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
 	}
 
