@@ -3,7 +3,7 @@ package routers
 import (
 	"net/http"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/routers/groups"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/routers/groups"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )

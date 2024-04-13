@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	dtos "github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+	dtos "github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
 	jwt "github.com/golang-jwt/jwt/v5"
 
 	mock "github.com/stretchr/testify/mock"

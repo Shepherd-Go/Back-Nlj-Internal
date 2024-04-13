@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/controllers"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/suite"
 )

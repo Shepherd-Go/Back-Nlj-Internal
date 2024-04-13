@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
-	mocks "github.com/BBCompanyca/Back-Nlj-Internal.git/mocks/services"
-	mocks2 "github.com/BBCompanyca/Back-Nlj-Internal.git/mocks/utils"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/controllers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
+	mocks "github.com/Shepherd-Go/Back-Nlj-Internal.git/mocks/services"
+	mocks2 "github.com/Shepherd-Go/Back-Nlj-Internal.git/mocks/utils"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/suite"
 )

@@ -6,13 +6,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/models"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/repository"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/db/models"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/db/repository"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/entity"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/utils"
 	"github.com/google/uuid"
-
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/entity"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -36,11 +35,6 @@ func NewServiceEmployee(repoEmployee repository.Employee, managePass utils.Passw
 func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error {
 
 	id := ctx.Value("id").(string)
-	permissions := ctx.Value("permissions").(string)
-
-	if permissions != "administrator" {
-		return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
-	}
 
 	emplModel, err := e.repoEmployee.SearchEmployeeByEmail(ctx, empl.Email)
 	if err != nil {
@@ -74,12 +68,6 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 
 func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 
-	permissions := ctx.Value("permissions")
-
-	if permissions != "administrator" {
-		return dtos.Employees{}, echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
-	}
-
 	empls, err := e.repoEmployee.SearchAllEmployees(ctx)
 	if err != nil {
 		return dtos.Employees{}, echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
@@ -91,11 +79,6 @@ func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.UpdateEmployee) error {
 
 	idToken := ctx.Value("id").(string)
-	permissions := ctx.Value("permissions")
-
-	if permissions != "administrator" {
-		return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
-	}
 
 	emplModel, err := e.repoEmployee.SearchEmployeeByID(ctx, id)
 	if err != nil {
@@ -136,11 +119,6 @@ func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.
 func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID) error {
 
 	idToken := ctx.Value("id").(string)
-	permissions := ctx.Value("permissions")
-
-	if permissions != "administrator" {
-		return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
-	}
 
 	if idToken == id.String() {
 		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: "you cannot delete your own account"})

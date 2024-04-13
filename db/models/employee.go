@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
 	"github.com/google/uuid"
 )
 

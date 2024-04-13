@@ -1,8 +1,8 @@
 package groups
 
 import (
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/middleware"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/controllers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/middleware"
 	"github.com/labstack/echo/v4"
 )
 
@@ -23,9 +23,9 @@ func (e *employee) Resource(g *echo.Group) {
 
 	groupPath := g.Group("/employee")
 
-	groupPath.POST("/create", e.employeeHand.CreateEmployee, e.middlewareJWT.Employee)
-	groupPath.GET("/all", e.employeeHand.GetEmployees, e.middlewareJWT.Employee)
-	groupPath.PUT("/update", e.employeeHand.UpdateEmployee, e.middlewareJWT.Employee)
-	groupPath.DELETE("/delete", e.employeeHand.DeleteEmployee, e.middlewareJWT.Employee)
+	groupPath.POST("/create", e.employeeHand.CreateEmployee, e.middlewareJWT.Employee, e.middlewareJWT.Administrator)
+	groupPath.GET("/all", e.employeeHand.GetEmployees, e.middlewareJWT.Employee, e.middlewareJWT.Administrator)
+	groupPath.PUT("/update", e.employeeHand.UpdateEmployee, e.middlewareJWT.Employee, e.middlewareJWT.Administrator)
+	groupPath.DELETE("/delete", e.employeeHand.DeleteEmployee, e.middlewareJWT.Employee, e.middlewareJWT.Administrator)
 
 }

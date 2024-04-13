@@ -1,14 +1,14 @@
 package providers
 
 import (
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/db"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/repository"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/middleware"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/routers"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/routers/groups"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/services"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/utils"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/controllers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/db"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/db/repository"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/middleware"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/routers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/routers/groups"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/services"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/utils"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/dig"
 )

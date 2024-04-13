@@ -3,10 +3,10 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/entity"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/services"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/utils"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/entity"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/services"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/utils"
 	"github.com/labstack/echo/v4"
 )
 
