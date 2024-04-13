@@ -85,22 +85,9 @@ func (suite *EmployeeServiceTestSuite) SetupTest() {
 	suite.underTest = services.NewServiceEmployee(suite.repo, suite.pass, suite.logs)
 }
 
-func (suite *EmployeeServiceTestSuite) TestCreate_WhenEmployeeNotPermissions() {
-
-	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "seller")
-
-	suite.repo.Mock.On("SearchEmployeeByEmail", ctx, dataCreateEmployeeIsCorrect).
-		Return(dtos.EmployeeResponse{ID: idEmployee}, err)
-
-	suite.Error(suite.underTest.CreateEmployee(ctx, dataCreateEmployeeIsCorrect))
-
-}
-
 func (suite *EmployeeServiceTestSuite) TestCreate_WhenSearchEmployeeByEmailFail() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByEmail", ctx, dataCreateEmployeeIsCorrect.Email).
 		Return(dtos.EmployeeResponse{ID: uuid.Nil}, err)
@@ -114,7 +101,6 @@ func (suite *EmployeeServiceTestSuite) TestCreate_WhenSearchEmployeeByEmailFail(
 func (suite *EmployeeServiceTestSuite) TestCreate_WhenEmployeeExists() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByEmail", ctx, dataCreateEmployeeIsCorrect.Email).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, nil)
@@ -126,7 +112,6 @@ func (suite *EmployeeServiceTestSuite) TestCreate_WhenEmployeeExists() {
 func (suite *EmployeeServiceTestSuite) TestCreate_WhenParsePermissionsFail() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByEmail", ctx, dataCreateEmployeeIsCorrect.Email).
 		Return(dtos.EmployeeResponse{ID: uuid.Nil}, nil)
@@ -144,7 +129,6 @@ func (suite *EmployeeServiceTestSuite) TestCreate_WhenParsePermissionsFail() {
 func (suite *EmployeeServiceTestSuite) TestCreate_WhenCreateEmployeeFail() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByEmail", ctx, dataCreateEmployeeIsCorrect.Email).
 		Return(dtos.EmployeeResponse{ID: uuid.Nil}, nil)
@@ -168,7 +152,6 @@ func (suite *EmployeeServiceTestSuite) TestCreate_WhenCreateEmployeeFail() {
 func (suite *EmployeeServiceTestSuite) TestCreate_WhenCreateEmployeeSuccess() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByEmail", ctx, dataCreateEmployeeIsCorrect.Email).
 		Return(dtos.EmployeeResponse{ID: uuid.Nil}, nil)
@@ -189,18 +172,7 @@ func (suite *EmployeeServiceTestSuite) TestCreate_WhenCreateEmployeeSuccess() {
 
 }
 
-func (suite *EmployeeServiceTestSuite) TestGet_WhenEmployeeNotPermissions() {
-
-	ctx = context.WithValue(ctx, permissionsKey, "seller")
-
-	_, err := suite.underTest.GetEmployees(ctx)
-	suite.Error(err)
-
-}
-
 func (suite *EmployeeServiceTestSuite) TestGet_WhenSearchAllEmployeesFail() {
-
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchAllEmployees", ctx).
 		Return(dtos.Employees{}, err)
@@ -212,8 +184,6 @@ func (suite *EmployeeServiceTestSuite) TestGet_WhenSearchAllEmployeesFail() {
 
 func (suite *EmployeeServiceTestSuite) TestGet_WhenSuccessfull() {
 
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
-
 	suite.repo.Mock.On("SearchAllEmployees", ctx).
 		Return(dtos.Employees{}, nil)
 
@@ -222,18 +192,9 @@ func (suite *EmployeeServiceTestSuite) TestGet_WhenSuccessfull() {
 
 }
 
-func (suite *EmployeeServiceTestSuite) TestUpdate_WhenEmployeeNotPermissions() {
-
-	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "sellerr")
-
-	suite.Error(suite.underTest.UpdateEmployees(ctx, idEmployee, dataUpdateEmployeeIsCorrect))
-}
-
 func (suite *EmployeeServiceTestSuite) TestUpdate_WhenSearchEmployeeByIDFail() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{}, err)
@@ -244,7 +205,6 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenSearchEmployeeByIDFail() {
 func (suite *EmployeeServiceTestSuite) TestUpdate_WhenSearchEmployeeNotExists() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: uuid.Nil}, nil)
@@ -255,7 +215,6 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenSearchEmployeeNotExists() 
 func (suite *EmployeeServiceTestSuite) TestUpdate_WhenSearchEmployeeByEmailAndNotIDFail() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, nil)
@@ -269,7 +228,6 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenSearchEmployeeByEmailAndNo
 func (suite *EmployeeServiceTestSuite) TestUpdate_WhenEmailExists() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, nil)
@@ -283,7 +241,6 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenEmailExists() {
 func (suite *EmployeeServiceTestSuite) TestUpdate_WhenParsePermissionsFail() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, nil)
@@ -299,7 +256,6 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenUpdateEmployeeFail() {
 	idToken := uuid.New()
 
 	ctx = context.WithValue(ctx, idKey, idToken.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, nil)
@@ -326,7 +282,6 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenUpdateEmployeeSuccess() {
 	idToken := uuid.New()
 
 	ctx = context.WithValue(ctx, idKey, idToken.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, nil)
@@ -348,19 +303,9 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenUpdateEmployeeSuccess() {
 	suite.NoError(suite.underTest.UpdateEmployees(ctx, idEmployee, dataUpdateEmployeeIsCorrect))
 }
 
-func (suite *EmployeeServiceTestSuite) TestDelete_WhenEmployeeNotPermissions() {
-
-	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "seller")
-
-	suite.Error(suite.underTest.DeleteEmployee(ctx, idEmployee))
-
-}
-
 func (suite *EmployeeServiceTestSuite) TestDelete_WhenEmployeeIsTheEmployeeDelete() {
 
 	ctx = context.WithValue(ctx, idKey, idEmployee.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.Error(suite.underTest.DeleteEmployee(ctx, idEmployee))
 
@@ -369,7 +314,6 @@ func (suite *EmployeeServiceTestSuite) TestDelete_WhenEmployeeIsTheEmployeeDelet
 func (suite *EmployeeServiceTestSuite) TestDelete_WhenSearchEmployeeByIDFail() {
 
 	ctx = context.WithValue(ctx, idKey, uuid.New().String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, err)
@@ -381,7 +325,6 @@ func (suite *EmployeeServiceTestSuite) TestDelete_WhenSearchEmployeeByIDFail() {
 func (suite *EmployeeServiceTestSuite) TestDelete_WhenEmployeeNotExists() {
 
 	ctx = context.WithValue(ctx, idKey, uuid.New().String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: uuid.Nil}, nil)
@@ -395,7 +338,6 @@ func (suite *EmployeeServiceTestSuite) TestDelete_WhenDeleteEmployeeFail() {
 	idToken := uuid.New()
 
 	ctx = context.WithValue(ctx, idKey, idToken.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, nil)
@@ -412,7 +354,6 @@ func (suite *EmployeeServiceTestSuite) TestDelete_WhenDeleteEmployeeSuccess() {
 	idToken := uuid.New()
 
 	ctx = context.WithValue(ctx, idKey, idToken.String())
-	ctx = context.WithValue(ctx, permissionsKey, "administrator")
 
 	suite.repo.Mock.On("SearchEmployeeByID", ctx, idEmployee).
 		Return(dtos.EmployeeResponse{ID: idEmployee}, nil)

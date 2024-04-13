@@ -11,6 +11,7 @@ import (
 
 type TokenMiddleware interface {
 	Employee(next echo.HandlerFunc) echo.HandlerFunc
+	Administrator(next echo.HandlerFunc) echo.HandlerFunc
 }
 
 type tokenMiddleware struct {
@@ -33,7 +34,7 @@ func (e *tokenMiddleware) Employee(next echo.HandlerFunc) echo.HandlerFunc {
 
 		claims, err := e.jwt.PaserLoginJWT(cookie.Value)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
+			return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: err.Error()})
 		}
 
 		ctx = context.WithValue(ctx, "id", claims["id"])
@@ -43,5 +44,22 @@ func (e *tokenMiddleware) Employee(next echo.HandlerFunc) echo.HandlerFunc {
 
 		return next(c)
 
+	}
+}
+
+func (e *tokenMiddleware) Administrator(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		ctx := c.Request().Context()
+
+		permissions := ctx.Value("permissions")
+
+		if permissions != "administrator" {
+			return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
+		}
+
+		c.SetRequest(c.Request().WithContext(ctx))
+
+		return next(c)
 	}
 }
