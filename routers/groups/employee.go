@@ -1,8 +1,8 @@
 package groups
 
 import (
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/middleware"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/controllers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/middleware"
 	"github.com/labstack/echo/v4"
 )
 

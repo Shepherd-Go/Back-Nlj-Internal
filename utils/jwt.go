@@ -3,8 +3,8 @@ package utils
 import (
 	"time"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/config"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/config"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 )

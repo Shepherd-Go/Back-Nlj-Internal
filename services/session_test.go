@@ -5,10 +5,10 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
-	mocks "github.com/BBCompanyca/Back-Nlj-Internal.git/mocks/db/repository"
-	mocks2 "github.com/BBCompanyca/Back-Nlj-Internal.git/mocks/utils"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/services"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
+	mocks "github.com/Shepherd-Go/Back-Nlj-Internal.git/mocks/db/repository"
+	mocks2 "github.com/Shepherd-Go/Back-Nlj-Internal.git/mocks/utils"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/services"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/suite"
 )

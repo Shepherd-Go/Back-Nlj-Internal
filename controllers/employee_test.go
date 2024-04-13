@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/controllers"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
-	mocks "github.com/BBCompanyca/Back-Nlj-Internal.git/mocks/services"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/controllers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
+	mocks "github.com/Shepherd-Go/Back-Nlj-Internal.git/mocks/services"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/suite"
@@ -18,7 +18,10 @@ import (
 var (
 	isTrue = true
 
+	idEmployee = uuid.MustParse("37a35c67-4953-468f-8d9a-75d4bd0c673b")
+
 	WhenDataIsValidInCreate = dtos.RegisterEmployee{
+		ID:           idEmployee,
 		FirstName:    "test",
 		LastName:     "test",
 		Email:        "test@gmail.com",

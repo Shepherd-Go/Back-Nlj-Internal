@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/entity"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/entity"
 	"github.com/labstack/echo/v4"
 )
 

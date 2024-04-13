@@ -13,6 +13,26 @@ type TokenMiddleware struct {
 	mock.Mock
 }
 
+// Administrator provides a mock function with given fields: next
+func (_m *TokenMiddleware) Administrator(next echo.HandlerFunc) echo.HandlerFunc {
+	ret := _m.Called(next)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Administrator")
+	}
+
+	var r0 echo.HandlerFunc
+	if rf, ok := ret.Get(0).(func(echo.HandlerFunc) echo.HandlerFunc); ok {
+		r0 = rf(next)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(echo.HandlerFunc)
+		}
+	}
+
+	return r0
+}
+
 // Employee provides a mock function with given fields: next
 func (_m *TokenMiddleware) Employee(next echo.HandlerFunc) echo.HandlerFunc {
 	ret := _m.Called(next)

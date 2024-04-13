@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/config"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/providers"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/routers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/config"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/providers"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/routers"
 	"github.com/labstack/echo/v4"
 )
 

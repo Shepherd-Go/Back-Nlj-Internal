@@ -6,13 +6,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/models"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/db/repository"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/db/models"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/db/repository"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/entity"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/utils"
 	"github.com/google/uuid"
-
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/entity"
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/utils"
 	"github.com/labstack/echo/v4"
 )
 

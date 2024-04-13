@@ -5,10 +5,10 @@ package mocks
 import (
 	context "context"
 
-	dtos "github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+	dtos "github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
 	mock "github.com/stretchr/testify/mock"
 
-	models "github.com/BBCompanyca/Back-Nlj-Internal.git/db/models"
+	models "github.com/Shepherd-Go/Back-Nlj-Internal.git/db/models"
 
 	uuid "github.com/google/uuid"
 )

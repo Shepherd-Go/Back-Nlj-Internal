@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/BBCompanyca/Back-Nlj-Internal.git/config"
+	"github.com/Shepherd-Go/Back-Nlj-Internal.git/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

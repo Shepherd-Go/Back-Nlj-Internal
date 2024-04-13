@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	dtos "github.com/BBCompanyca/Back-Nlj-Internal.git/dtos"
+	dtos "github.com/Shepherd-Go/Back-Nlj-Internal.git/dtos"
 	mock "github.com/stretchr/testify/mock"
 )
 
