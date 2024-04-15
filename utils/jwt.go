@@ -35,7 +35,7 @@ func (jwtutils *jwtUtils) SignedLoginToken(e dtos.EmployeeResponse) (string, err
 	claims := MyCustomClaims{
 		e.ID,
 		e.Permissions,
-		jwt.RegisteredClaims{ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Minute))},
+		jwt.RegisteredClaims{ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour))},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

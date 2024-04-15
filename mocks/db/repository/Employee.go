@@ -18,6 +18,24 @@ type Employee struct {
 	mock.Mock
 }
 
+// ActivateEmail provides a mock function with given fields: ctx, id, pass
+func (_m *Employee) ActivateEmail(ctx context.Context, id string, pass string) error {
+	ret := _m.Called(ctx, id, pass)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ActivateEmail")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = rf(ctx, id, pass)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // CreateEmployee provides a mock function with given fields: ctx, empl
 func (_m *Employee) CreateEmployee(ctx context.Context, empl models.Employee) error {
 	ret := _m.Called(ctx, empl)

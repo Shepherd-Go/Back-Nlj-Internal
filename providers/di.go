@@ -40,9 +40,11 @@ func BuildContainer() *dig.Container {
 	_ = Container.Provide(controllers.NewHealthController)
 	_ = Container.Provide(controllers.NewSessionController)
 	_ = Container.Provide(controllers.NewEmployeeController)
+	_ = Container.Provide(controllers.NewActiveEmailControler)
 
 	_ = Container.Provide(services.NewSessionService)
 	_ = Container.Provide(services.NewServiceEmployee)
+	_ = Container.Provide(services.NewActivateEmailService)
 
 	_ = Container.Provide(repository.NewRepositoryEmployee)
 
