@@ -15,25 +15,25 @@ type Session struct {
 }
 
 // Session provides a mock function with given fields: ctx, login
-func (_m *Session) Session(ctx context.Context, login dtos.Login) (dtos.EmployeeResponse, error) {
+func (_m *Session) Session(ctx context.Context, login dtos.LogIn) (dtos.Session, error) {
 	ret := _m.Called(ctx, login)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Session")
 	}
 
-	var r0 dtos.EmployeeResponse
+	var r0 dtos.Session
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, dtos.Login) (dtos.EmployeeResponse, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, dtos.LogIn) (dtos.Session, error)); ok {
 		return rf(ctx, login)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, dtos.Login) dtos.EmployeeResponse); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, dtos.LogIn) dtos.Session); ok {
 		r0 = rf(ctx, login)
 	} else {
-		r0 = ret.Get(0).(dtos.EmployeeResponse)
+		r0 = ret.Get(0).(dtos.Session)
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, dtos.Login) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, dtos.LogIn) error); ok {
 		r1 = rf(ctx, login)
 	} else {
 		r1 = ret.Error(1)

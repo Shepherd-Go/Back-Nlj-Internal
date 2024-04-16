@@ -32,6 +32,7 @@ func BuildContainer() *dig.Container {
 	_ = Container.Provide(utils.NewHashPassword)
 	_ = Container.Provide(utils.NewLogsError)
 	_ = Container.Provide(utils.NewJWT)
+	_ = Container.Provide(utils.NewSendEmail)
 
 	_ = Container.Provide(groups.NewHealthGroups)
 	_ = Container.Provide(groups.NewGroupSession)
@@ -40,11 +41,14 @@ func BuildContainer() *dig.Container {
 	_ = Container.Provide(controllers.NewHealthController)
 	_ = Container.Provide(controllers.NewSessionController)
 	_ = Container.Provide(controllers.NewEmployeeController)
+	_ = Container.Provide(controllers.NewActiveEmailControler)
 
 	_ = Container.Provide(services.NewSessionService)
 	_ = Container.Provide(services.NewServiceEmployee)
+	_ = Container.Provide(services.NewActivateEmailService)
 
 	_ = Container.Provide(repository.NewRepositoryEmployee)
+	_ = Container.Provide(repository.NewLogInRepository)
 
 	return Container
 }

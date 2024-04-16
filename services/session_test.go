@@ -17,7 +17,7 @@ var (
 	ctxTrace    = context.Background()
 	errExpected = errors.New("error")
 
-	loginData = dtos.Login{
+	loginData = dtos.LogIn{
 		Identifier: "test@test.com",
 		Password:   "123456",
 	}
@@ -29,13 +29,13 @@ func TestSessionServiceSuit(t *testing.T) {
 
 type SessionServiceTestSuite struct {
 	suite.Suite
-	repo      *mocks.Employee
+	repo      *mocks.LogIn
 	pass      *mocks2.Password
 	underTest services.Session
 }
 
 func (suite *SessionServiceTestSuite) SetupTest() {
-	suite.repo = &mocks.Employee{}
+	suite.repo = &mocks.LogIn{}
 	suite.pass = &mocks2.Password{}
 	suite.underTest = services.NewSessionService(suite.repo, suite.pass)
 }
@@ -43,7 +43,7 @@ func (suite *SessionServiceTestSuite) SetupTest() {
 func (suite *SessionServiceTestSuite) TestWhenSearchEmployeByEmailOrUsernameFail() {
 
 	suite.repo.Mock.On("SearchEmployeByEmailOrUsername", ctxTrace, loginData.Identifier).
-		Return(dtos.EmployeeResponse{}, errExpected)
+		Return(dtos.Session{}, errExpected)
 
 	_, err := suite.underTest.Session(ctxTrace, loginData)
 	suite.Error(err)
@@ -53,7 +53,7 @@ func (suite *SessionServiceTestSuite) TestWhenSearchEmployeByEmailOrUsernameFail
 func (suite *SessionServiceTestSuite) TestWhenEmployeeNotExists() {
 
 	suite.repo.Mock.On("SearchEmployeByEmailOrUsername", ctxTrace, loginData.Identifier).
-		Return(dtos.EmployeeResponse{}, nil)
+		Return(dtos.Session{}, nil)
 
 	_, err := suite.underTest.Session(ctxTrace, loginData)
 	suite.Error(err)
@@ -63,7 +63,7 @@ func (suite *SessionServiceTestSuite) TestWhenEmployeeNotExists() {
 func (suite *SessionServiceTestSuite) TestWhenPasswordIsIncorrect() {
 
 	suite.repo.Mock.On("SearchEmployeByEmailOrUsername", ctxTrace, loginData.Identifier).
-		Return(dtos.EmployeeResponse{ID: uuid.New(), Password: []byte("12345")}, nil)
+		Return(dtos.Session{ID: uuid.New(), Password: []byte("12345")}, nil)
 
 	suite.pass.Mock.On("CheckPasswordHash", []byte("12345"), loginData.Password).
 		Return(false)
@@ -78,7 +78,7 @@ func (suite *SessionServiceTestSuite) TestWhenStatusIsFalse() {
 	isFalse := false
 
 	suite.repo.Mock.On("SearchEmployeByEmailOrUsername", ctxTrace, loginData.Identifier).
-		Return(dtos.EmployeeResponse{ID: uuid.New(), Password: []byte("123456"), Status: &isFalse}, nil)
+		Return(dtos.Session{ID: uuid.New(), Password: []byte("123456"), Status: &isFalse}, nil)
 
 	suite.pass.Mock.On("CheckPasswordHash", []byte("123456"), loginData.Password).
 		Return(true)
@@ -93,7 +93,7 @@ func (suite *SessionServiceTestSuite) TestSession_WhenSuccess() {
 	isTrue := true
 
 	suite.repo.Mock.On("SearchEmployeByEmailOrUsername", ctxTrace, loginData.Identifier).
-		Return(dtos.EmployeeResponse{ID: uuid.New(), Password: []byte("123456"), Status: &isTrue}, nil)
+		Return(dtos.Session{ID: uuid.New(), Password: []byte("123456"), Status: &isTrue}, nil)
 
 	suite.pass.Mock.On("CheckPasswordHash", []byte("123456"), loginData.Password).
 		Return(true)

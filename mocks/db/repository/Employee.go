@@ -18,6 +18,24 @@ type Employee struct {
 	mock.Mock
 }
 
+// ActivateEmail provides a mock function with given fields: ctx, id, pass
+func (_m *Employee) ActivateEmail(ctx context.Context, id string, pass string) error {
+	ret := _m.Called(ctx, id, pass)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ActivateEmail")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = rf(ctx, id, pass)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // CreateEmployee provides a mock function with given fields: ctx, empl
 func (_m *Employee) CreateEmployee(ctx context.Context, empl models.Employee) error {
 	ret := _m.Called(ctx, empl)
@@ -77,34 +95,6 @@ func (_m *Employee) SearchAllEmployees(ctx context.Context) (dtos.Employees, err
 
 	if rf, ok := ret.Get(1).(func(context.Context) error); ok {
 		r1 = rf(ctx)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
-// SearchEmployeByEmailOrUsername provides a mock function with given fields: ctx, identifier
-func (_m *Employee) SearchEmployeByEmailOrUsername(ctx context.Context, identifier string) (dtos.EmployeeResponse, error) {
-	ret := _m.Called(ctx, identifier)
-
-	if len(ret) == 0 {
-		panic("no return value specified for SearchEmployeByEmailOrUsername")
-	}
-
-	var r0 dtos.EmployeeResponse
-	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string) (dtos.EmployeeResponse, error)); ok {
-		return rf(ctx, identifier)
-	}
-	if rf, ok := ret.Get(0).(func(context.Context, string) dtos.EmployeeResponse); ok {
-		r0 = rf(ctx, identifier)
-	} else {
-		r0 = ret.Get(0).(dtos.EmployeeResponse)
-	}
-
-	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
-		r1 = rf(ctx, identifier)
 	} else {
 		r1 = ret.Error(1)
 	}

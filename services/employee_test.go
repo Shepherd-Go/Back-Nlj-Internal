@@ -74,15 +74,15 @@ type EmployeeServiceTestSuite struct {
 	suite.Suite
 	repo      *mocks.Employee
 	pass      *mocks2.Password
-	logs      *mocks2.LogsError
+	sendEmail *mocks2.SendEmail
 	underTest services.Employee
 }
 
 func (suite *EmployeeServiceTestSuite) SetupTest() {
 	suite.repo = &mocks.Employee{}
 	suite.pass = &mocks2.Password{}
-	suite.logs = &mocks2.LogsError{}
-	suite.underTest = services.NewServiceEmployee(suite.repo, suite.pass, suite.logs)
+	suite.sendEmail = &mocks2.SendEmail{}
+	suite.underTest = services.NewServiceEmployee(suite.repo, suite.pass, suite.sendEmail)
 }
 
 func (suite *EmployeeServiceTestSuite) TestCreate_WhenSearchEmployeeByEmailFail() {
@@ -167,6 +167,8 @@ func (suite *EmployeeServiceTestSuite) TestCreate_WhenCreateEmployeeSuccess() {
 
 	suite.repo.Mock.On("CreateEmployee", ctx, buildEmployee).
 		Return(nil)
+
+	suite.sendEmail.Mock.On("EmployeeRegistered", dataCreateEmployeeIsCorrect.Email, dataCreateEmployeeIsCorrect.FirstName, buildEmployee.Username, "testtest")
 
 	suite.NoError(suite.underTest.CreateEmployee(ctx, dataCreateEmployeeIsCorrect))
 

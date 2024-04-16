@@ -11,12 +11,13 @@ type Employee interface {
 }
 
 type employee struct {
-	middlewareJWT middleware.TokenMiddleware
-	employeeHand  controllers.Employee
+	middlewareJWT     middleware.TokenMiddleware
+	employeeHand      controllers.Employee
+	activateEmailHand controllers.ActivateEmail
 }
 
-func NewGroupEmployee(middlewareJWT middleware.TokenMiddleware, employeeHand controllers.Employee) Employee {
-	return &employee{middlewareJWT, employeeHand}
+func NewGroupEmployee(middlewareJWT middleware.TokenMiddleware, employeeHand controllers.Employee, activateEmailHand controllers.ActivateEmail) Employee {
+	return &employee{middlewareJWT, employeeHand, activateEmailHand}
 }
 
 func (e *employee) Resource(g *echo.Group) {
@@ -27,5 +28,7 @@ func (e *employee) Resource(g *echo.Group) {
 	groupPath.GET("/all", e.employeeHand.GetEmployees, e.middlewareJWT.Employee, e.middlewareJWT.Administrator)
 	groupPath.PUT("/update", e.employeeHand.UpdateEmployee, e.middlewareJWT.Employee, e.middlewareJWT.Administrator)
 	groupPath.DELETE("/delete", e.employeeHand.DeleteEmployee, e.middlewareJWT.Employee, e.middlewareJWT.Administrator)
+
+	groupPath.PUT("/activate-email", e.activateEmailHand.ActivateEmail, e.middlewareJWT.Employee)
 
 }

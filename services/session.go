@@ -13,38 +13,39 @@ import (
 )
 
 type Session interface {
-	Session(ctx context.Context, login dtos.Login) (dtos.EmployeeResponse, error)
+	Session(ctx context.Context, login dtos.LogIn) (dtos.Session, error)
 }
 
 type session struct {
-	repoEmployee repository.Employee
-	pass         utils.Password
+	logIn repository.LogIn
+	pass  utils.Password
 }
 
-func NewSessionService(repoEmployee repository.Employee, pass utils.Password) Session {
-	return &session{repoEmployee, pass}
+func NewSessionService(logIn repository.LogIn, pass utils.Password) Session {
+	return &session{logIn, pass}
 }
 
-func (s *session) Session(ctx context.Context, login dtos.Login) (dtos.EmployeeResponse, error) {
+func (s *session) Session(ctx context.Context, login dtos.LogIn) (dtos.Session, error) {
 
-	empl, err := s.repoEmployee.SearchEmployeByEmailOrUsername(ctx, login.Identifier)
+	empl, err := s.logIn.SearchEmployeByEmailOrUsername(ctx, login.Identifier)
 	if err != nil {
-		return dtos.EmployeeResponse{}, echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
+		return dtos.Session{}, echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
 	}
 
 	if empl.ID == uuid.Nil {
-		return dtos.EmployeeResponse{}, echo.NewHTTPError(http.StatusNotFound, entity.Response{Message: "incorrect access data"})
+		return dtos.Session{}, echo.NewHTTPError(http.StatusNotFound, entity.Response{Message: "incorrect access data"})
 	}
 
 	if !(s.pass.CheckPasswordHash(empl.Password, login.Password)) {
-		return dtos.EmployeeResponse{}, echo.NewHTTPError(http.StatusNotFound, entity.Response{Message: "incorrect access data"})
+		return dtos.Session{}, echo.NewHTTPError(http.StatusNotFound, entity.Response{Message: "incorrect access data"})
 	}
 
 	if !*empl.Status {
-		return dtos.EmployeeResponse{}, echo.NewHTTPError(http.StatusForbidden, entity.Response{Message: "inactive employee"})
+		return dtos.Session{}, echo.NewHTTPError(http.StatusForbidden, entity.Response{Message: "inactive employee"})
 	}
 
 	empl.Password = nil
+	empl.Status = nil
 
 	return empl, nil
 }

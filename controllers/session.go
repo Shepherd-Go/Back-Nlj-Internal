@@ -27,7 +27,7 @@ func (s *session) Session(c echo.Context) error {
 
 	ctx := c.Request().Context()
 
-	login := dtos.Login{}
+	login := dtos.LogIn{}
 
 	if err := c.Bind(&login); err != nil {
 		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})
