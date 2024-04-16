@@ -48,6 +48,7 @@ func BuildContainer() *dig.Container {
 	_ = Container.Provide(services.NewActivateEmailService)
 
 	_ = Container.Provide(repository.NewRepositoryEmployee)
+	_ = Container.Provide(repository.NewLogInRepository)
 
 	return Container
 }

@@ -45,7 +45,7 @@ func (_m *JWT) PaserLoginJWT(value string) (jwt.MapClaims, error) {
 }
 
 // SignedLoginToken provides a mock function with given fields: u
-func (_m *JWT) SignedLoginToken(u dtos.EmployeeResponse) (string, error) {
+func (_m *JWT) SignedLoginToken(u dtos.Session) (string, error) {
 	ret := _m.Called(u)
 
 	if len(ret) == 0 {
@@ -54,16 +54,16 @@ func (_m *JWT) SignedLoginToken(u dtos.EmployeeResponse) (string, error) {
 
 	var r0 string
 	var r1 error
-	if rf, ok := ret.Get(0).(func(dtos.EmployeeResponse) (string, error)); ok {
+	if rf, ok := ret.Get(0).(func(dtos.Session) (string, error)); ok {
 		return rf(u)
 	}
-	if rf, ok := ret.Get(0).(func(dtos.EmployeeResponse) string); ok {
+	if rf, ok := ret.Get(0).(func(dtos.Session) string); ok {
 		r0 = rf(u)
 	} else {
 		r0 = ret.Get(0).(string)
 	}
 
-	if rf, ok := ret.Get(1).(func(dtos.EmployeeResponse) error); ok {
+	if rf, ok := ret.Get(1).(func(dtos.Session) error); ok {
 		r1 = rf(u)
 	} else {
 		r1 = ret.Error(1)

@@ -15,7 +15,6 @@ type Employee interface {
 	SearchEmployeeByID(ctx context.Context, id uuid.UUID) (dtos.EmployeeResponse, error)
 	SearchEmployeeByEmail(ctx context.Context, email string) (dtos.EmployeeResponse, error)
 	SearchEmployeeByEmailAndNotID(ctx context.Context, id uuid.UUID, email string) (dtos.EmployeeResponse, error)
-	SearchEmployeByEmailOrUsername(ctx context.Context, identifier string) (dtos.EmployeeResponse, error)
 	SearchAllEmployees(ctx context.Context) (dtos.Employees, error)
 	UpdateEmployee(ctx context.Context, empl models.Employee, id uuid.UUID) error
 	ActivateEmail(ctx context.Context, id, pass string) error
@@ -79,21 +78,6 @@ func (e *employee) SearchEmployeeByEmailAndNotID(ctx context.Context, id uuid.UU
 	}
 
 	return empl.ToDomainDTO(), nil
-}
-
-func (e *employee) SearchEmployeByEmailOrUsername(ctx context.Context, identifier string) (dtos.EmployeeResponse, error) {
-
-	empl := models.Employee{}
-
-	if err := e.db.WithContext(ctx).Table("employees e").
-		Where("e.username=?", identifier).Or("e.email=?", identifier).
-		Select("e.id, e.first_name, e.last_name, e.username, e.email, e.password, e.phone, e.permissions, e.confirmed_email, e.code_bank, e.pay_phone, e.payment_card, e.status, e.created_by, e.updated_by, e.created_at, e.updated_at").
-		Scan(&empl).Error; err != nil {
-		return dtos.EmployeeResponse{}, err
-	}
-
-	return empl.ToDomainDTO(), nil
-
 }
 
 func (e *employee) SearchAllEmployees(ctx context.Context) (dtos.Employees, error) {

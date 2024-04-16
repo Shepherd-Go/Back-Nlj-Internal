@@ -16,17 +16,17 @@ import (
 )
 
 var (
-	WhenProccessIsSuccess = dtos.Login{
+	WhenProccessIsSuccess = dtos.LogIn{
 		Identifier: "neiferjr15@gmail.com",
 		Password:   "12345678",
 	}
 
-	WhenDataIsIncorrect = dtos.Login{
+	WhenDataIsIncorrect = dtos.LogIn{
 		Identifier: "runbex13@gmail.com",
 		Password:   "87654321",
 	}
 
-	WhenMissingOneData = dtos.Login{
+	WhenMissingOneData = dtos.LogIn{
 		Identifier: "neiferjr15@gmail.com",
 		Password:   "",
 	}
@@ -73,9 +73,9 @@ func (suite *SessionControllerTestSuite) TestWhenValidateFail() {
 	setupCase.Req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	suite.svc.Mock.On("Session", setupCase.Ctx.Request().Context(), WhenProccessIsSuccess).
-		Return(dtos.EmployeeResponse{}, nil)
+		Return(dtos.Session{}, nil)
 
-	suite.jwt.Mock.On("SignedLoginToken", dtos.EmployeeResponse{}).
+	suite.jwt.Mock.On("SignedLoginToken", dtos.Session{}).
 		Return("TOKEN", nil)
 
 	err := suite.underTest.Session(setupCase.Ctx)
@@ -90,9 +90,9 @@ func (suite *SessionControllerTestSuite) TestWhenServerReturnError() {
 	setupCase.Req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	suite.svc.Mock.On("Session", setupCase.Ctx.Request().Context(), WhenProccessIsSuccess).
-		Return(dtos.EmployeeResponse{}, errors.New("Error"))
+		Return(dtos.Session{}, errors.New("Error"))
 
-	suite.jwt.Mock.On("SignedLoginToken", dtos.EmployeeResponse{}).
+	suite.jwt.Mock.On("SignedLoginToken", dtos.Session{}).
 		Return("TOKEN", nil)
 
 	err := suite.underTest.Session(setupCase.Ctx)
@@ -107,9 +107,9 @@ func (suite *SessionControllerTestSuite) TestWhenSignedLoginTokenReturnError() {
 	setupCase.Req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	suite.svc.Mock.On("Session", setupCase.Ctx.Request().Context(), WhenProccessIsSuccess).
-		Return(dtos.EmployeeResponse{}, nil)
+		Return(dtos.Session{}, nil)
 
-	suite.jwt.Mock.On("SignedLoginToken", dtos.EmployeeResponse{}).
+	suite.jwt.Mock.On("SignedLoginToken", dtos.Session{}).
 		Return("", errors.New("Error"))
 
 	err := suite.underTest.Session(setupCase.Ctx)
@@ -124,9 +124,9 @@ func (suite *SessionControllerTestSuite) TestWhenProcessIsSuccess() {
 	setupCase.Req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	suite.svc.Mock.On("Session", setupCase.Ctx.Request().Context(), WhenProccessIsSuccess).
-		Return(dtos.EmployeeResponse{}, nil)
+		Return(dtos.Session{}, nil)
 
-	suite.jwt.Mock.On("SignedLoginToken", dtos.EmployeeResponse{}).
+	suite.jwt.Mock.On("SignedLoginToken", dtos.Session{}).
 		Return("TOKEN", nil)
 
 	err := suite.underTest.Session(setupCase.Ctx)

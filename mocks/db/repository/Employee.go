@@ -102,34 +102,6 @@ func (_m *Employee) SearchAllEmployees(ctx context.Context) (dtos.Employees, err
 	return r0, r1
 }
 
-// SearchEmployeByEmailOrUsername provides a mock function with given fields: ctx, identifier
-func (_m *Employee) SearchEmployeByEmailOrUsername(ctx context.Context, identifier string) (dtos.EmployeeResponse, error) {
-	ret := _m.Called(ctx, identifier)
-
-	if len(ret) == 0 {
-		panic("no return value specified for SearchEmployeByEmailOrUsername")
-	}
-
-	var r0 dtos.EmployeeResponse
-	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string) (dtos.EmployeeResponse, error)); ok {
-		return rf(ctx, identifier)
-	}
-	if rf, ok := ret.Get(0).(func(context.Context, string) dtos.EmployeeResponse); ok {
-		r0 = rf(ctx, identifier)
-	} else {
-		r0 = ret.Get(0).(dtos.EmployeeResponse)
-	}
-
-	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
-		r1 = rf(ctx, identifier)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
 // SearchEmployeeByEmail provides a mock function with given fields: ctx, email
 func (_m *Employee) SearchEmployeeByEmail(ctx context.Context, email string) (dtos.EmployeeResponse, error) {
 	ret := _m.Called(ctx, email)

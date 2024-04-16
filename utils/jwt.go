@@ -14,7 +14,7 @@ var (
 )
 
 type JWT interface {
-	SignedLoginToken(u dtos.EmployeeResponse) (string, error)
+	SignedLoginToken(u dtos.Session) (string, error)
 	PaserLoginJWT(value string) (jwt.MapClaims, error)
 }
 
@@ -30,7 +30,7 @@ type MyCustomClaims struct {
 	jwt.RegisteredClaims
 }
 
-func (jwtutils *jwtUtils) SignedLoginToken(e dtos.EmployeeResponse) (string, error) {
+func (jwtutils *jwtUtils) SignedLoginToken(e dtos.Session) (string, error) {
 
 	claims := MyCustomClaims{
 		e.ID,
