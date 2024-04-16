@@ -19,6 +19,7 @@ type Config struct {
 	Server   Server   `validate:"required" mapstructure:"server"`
 	JWT      JWT      `validate:"required" mapstructure:"jwt"`
 	Database Database `validate:"required" mapstructure:"database"`
+	Email    Email    `validate:"required" mapstructure:"email"`
 }
 
 type Server struct {
@@ -35,6 +36,11 @@ type Database struct {
 	User     string `validate:"required" mapstructure:"user"`
 	Password string `validate:"required" mapstructure:"password"`
 	DBName   string `validate:"required" mapstructure:"dbname"`
+}
+
+type Email struct {
+	Email    string `validate:"required" mapstructure:"email"`
+	Password string `validate:"required" mapstructure:"password"`
 }
 
 func Environments() Config {

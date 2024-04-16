@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/Shepherd-Go/Back-Nlj-Internal.git/db/models"
@@ -25,11 +24,11 @@ type Employee interface {
 type employee struct {
 	repoEmployee repository.Employee
 	managePass   utils.Password
-	logsError    utils.LogsError
+	sendEmail    utils.SendEmail
 }
 
-func NewServiceEmployee(repoEmployee repository.Employee, managePass utils.Password, logsError utils.LogsError) Employee {
-	return &employee{repoEmployee, managePass, logsError}
+func NewServiceEmployee(repoEmployee repository.Employee, managePass utils.Password, sendEmail utils.SendEmail) Employee {
+	return &employee{repoEmployee, managePass, sendEmail}
 }
 
 func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error {
@@ -46,9 +45,8 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 	}
 
 	passTemporary := e.managePass.GenerateTemporaryPassword()
-	fmt.Println(passTemporary)
-	e.managePass.HashPassword(&passTemporary)
 	empl.Password = passTemporary
+	e.managePass.HashPassword(&empl.Password)
 
 	if err = parsePermissions(&empl.Permissions); err != nil {
 		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: err.Error()})
@@ -62,6 +60,8 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 	if err := e.repoEmployee.CreateEmployee(ctx, buildEmployee); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
 	}
+
+	go e.sendEmail.EmployeeRegistered(buildEmployee.Email, buildEmployee.FirstName, buildEmployee.Username, passTemporary)
 
 	return nil
 }

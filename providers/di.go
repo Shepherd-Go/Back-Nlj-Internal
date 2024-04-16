@@ -32,6 +32,7 @@ func BuildContainer() *dig.Container {
 	_ = Container.Provide(utils.NewHashPassword)
 	_ = Container.Provide(utils.NewLogsError)
 	_ = Container.Provide(utils.NewJWT)
+	_ = Container.Provide(utils.NewSendEmail)
 
 	_ = Container.Provide(groups.NewHealthGroups)
 	_ = Container.Provide(groups.NewGroupSession)
