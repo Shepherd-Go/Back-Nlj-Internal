@@ -16,7 +16,7 @@ type EmployeeResponse struct {
 	Email           string    `json:"email"`
 	Password        []byte    `json:"password,omitempty"`
 	Phone           string    `json:"phone"`
-	Permissions     string    `json:"permissios"`
+	Permissions     string    `json:"permissions"`
 	Confirmed_Email *bool     `json:"confirmed_email"`
 	Code_Bank       string    `json:"code_bank"`
 	Pay_Phone       string    `json:"pay_phone"`

@@ -37,13 +37,15 @@ func (s *sendEmail) EmployeeRegistered(email, first_name, username, password str
 		Password:   password,
 	}
 
-	t, err := template.ParseFiles("./templates/email.html")
+	t, err := template.ParseFiles("./templates/welcome-new-employee.html")
 	if err != nil {
 		log.Println(err)
 	}
 
 	body := new(bytes.Buffer)
-	t.Execute(body, dataEmail)
+	if err := t.Execute(body, dataEmail); err != nil {
+		log.Println(err)
+	}
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", "nljstore.ecommerce@gmail.com")
@@ -56,5 +58,7 @@ func (s *sendEmail) EmployeeRegistered(email, first_name, username, password str
 	if err := d.DialAndSend(m); err != nil {
 		log.Println(err)
 	}
+
+	log.Println("Email enviado con exito.!!")
 
 }

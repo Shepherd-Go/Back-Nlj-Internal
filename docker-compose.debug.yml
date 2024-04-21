@@ -5,6 +5,13 @@ services:
     image: backnljinternal
     build:
       context: .
+      network: 
+        - red-nlj-internal
+      labels:
+        - "traefik.http.routers.whoami.rule=Host(`employees.localhost`)"
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000
+networks:
+  red-nlj-internal:
+    external: true

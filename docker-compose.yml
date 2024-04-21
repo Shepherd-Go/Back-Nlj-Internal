@@ -6,19 +6,15 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    networks:
+      - red-nlj-internal
+    labels:
+      - "traefik.http.routers.employees.rule=Host(`employees.localhost`)"
     ports:
       - "$SERVER_PORT:$SERVER_PORT"
     env_file:
-      - .env
-  db:
-    image: postgres
-    container_name: db-pg-internal
-    environment:
-      - "POSTGRES_USER=$DATABASE_USER"
-      - "POSTGRES_PASSWORD=$DATABASE_PASSWORD"
-      - "POSTGRES_DB=$DATABASE_DBNAME"
-    ports:
-      - 5432:5432
-
-
+      - .env    
+networks:
+  red-nlj-internal:
+    external: true
 
