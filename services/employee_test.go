@@ -25,44 +25,33 @@ var (
 	idEmployee = uuid.MustParse("37a35c67-4953-468f-8d9a-75d4bd0c673b")
 
 	dataCreateEmployeeIsCorrect = dtos.RegisterEmployee{
-		ID:           idEmployee,
-		FirstName:    "test",
-		LastName:     "test",
-		Email:        "test@test.net",
-		Phone:        "00000000000",
-		Password:     "testtest",
-		Permissions:  "administrator",
-		Code_Bank:    "test",
-		Pay_Phone:    "00000000000",
-		Payment_Card: "00000000",
-		Created_by:   "37a35c67-4953-468f-8d9a-75d4bd0c673b",
-		Updated_by:   "37a35c67-4953-468f-8d9a-75d4bd0c673b",
+		ID:          idEmployee,
+		FirstName:   "test",
+		LastName:    "test",
+		Email:       "test@test.net",
+		Phone:       "00000000000",
+		Password:    "testtest",
+		Permissions: "administrador",
 	}
 
 	dataUpdateEmployeeIsCorrect = dtos.UpdateEmployee{
-		ID:           idEmployee,
-		FirstName:    "test",
-		LastName:     "test",
-		Email:        "test@test.com",
-		Phone:        "00000000000",
-		Permissions:  "seller",
-		Code_Bank:    "0000 (test)",
-		Pay_Phone:    "00000000000",
-		Payment_Card: "v0000000",
-		Status:       &isTrue,
+		ID:          idEmployee,
+		FirstName:   "test",
+		LastName:    "test",
+		Email:       "test@test.com",
+		Phone:       "00000000000",
+		Permissions: "vendedor",
+		Status:      &isTrue,
 	}
 
 	dataUpdateEmployeeIsIncorrect = dtos.UpdateEmployee{
-		ID:           idEmployee,
-		FirstName:    "test",
-		LastName:     "test",
-		Email:        "test@test.com",
-		Phone:        "00000000000",
-		Permissions:  "error",
-		Code_Bank:    "0000 (test)",
-		Pay_Phone:    "00000000000",
-		Payment_Card: "v0000000",
-		Status:       &isTrue,
+		ID:          idEmployee,
+		FirstName:   "test",
+		LastName:    "test",
+		Email:       "test@test.com",
+		Phone:       "00000000000",
+		Permissions: "error",
+		Status:      &isTrue,
 	}
 )
 
@@ -266,7 +255,6 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenUpdateEmployeeFail() {
 		Return(dtos.EmployeeResponse{ID: uuid.Nil}, nil)
 
 	dataUpdateEmployeeIsCorrect.ID = idEmployee
-	dataUpdateEmployeeIsCorrect.Updated_by = idToken.String()
 
 	buildModelEmploye := models.Employee{}
 	buildModelEmploye.BuildUpdatedEmployeeModel(dataUpdateEmployeeIsCorrect)
@@ -292,7 +280,6 @@ func (suite *EmployeeServiceTestSuite) TestUpdate_WhenUpdateEmployeeSuccess() {
 		Return(dtos.EmployeeResponse{ID: uuid.Nil}, nil)
 
 	dataUpdateEmployeeIsCorrect.ID = idEmployee
-	dataUpdateEmployeeIsCorrect.Updated_by = idToken.String()
 
 	buildModelEmploye := models.Employee{}
 	buildModelEmploye.BuildUpdatedEmployeeModel(dataUpdateEmployeeIsCorrect)

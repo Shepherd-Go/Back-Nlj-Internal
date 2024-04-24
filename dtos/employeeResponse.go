@@ -18,12 +18,7 @@ type EmployeeResponse struct {
 	Phone           string    `json:"phone"`
 	Permissions     string    `json:"permissions"`
 	Confirmed_Email *bool     `json:"confirmed_email"`
-	Code_Bank       string    `json:"code_bank"`
-	Pay_Phone       string    `json:"pay_phone"`
-	Payment_Card    string    `json:"payment_card"`
 	Status          *bool     `json:"status"`
-	Created_By      string    `json:"created_by"`
-	Updated_By      string    `json:"updated_by"`
 	Created_At      time.Time `json:"created_at"`
 	Updated_At      time.Time `json:"updated_at"`
 }

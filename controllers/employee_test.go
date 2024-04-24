@@ -21,40 +21,31 @@ var (
 	idEmployee = uuid.MustParse("37a35c67-4953-468f-8d9a-75d4bd0c673b")
 
 	WhenDataIsValidInCreate = dtos.RegisterEmployee{
-		ID:           idEmployee,
-		FirstName:    "test",
-		LastName:     "test",
-		Email:        "test@gmail.com",
-		Phone:        "00000000000",
-		Permissions:  "administrator",
-		Code_Bank:    "test",
-		Pay_Phone:    "00000000000",
-		Payment_Card: "test",
+		ID:          idEmployee,
+		FirstName:   "test",
+		LastName:    "test",
+		Email:       "test@gmail.com",
+		Phone:       "00000000000",
+		Permissions: "administrator",
 	}
 
 	WhenDataIsValidInUpdate = dtos.UpdateEmployee{
-		ID:           uuid.New(),
-		FirstName:    "test",
-		LastName:     "test",
-		Email:        "test@gmail.com",
-		Phone:        "00000000000",
-		Permissions:  "administrator",
-		Code_Bank:    "test",
-		Pay_Phone:    "00000000000",
-		Payment_Card: "test",
-		Status:       &isTrue,
+		ID:          uuid.New(),
+		FirstName:   "test",
+		LastName:    "test",
+		Email:       "test@gmail.com",
+		Phone:       "00000000000",
+		Permissions: "administrator",
+		Status:      &isTrue,
 	}
 
 	WhenDataIsBadInUpdate = dtos.UpdateEmployee{
-		FirstName:    "test",
-		LastName:     "test",
-		Email:        "test@gmail.com",
-		Phone:        "test",
-		Permissions:  "administrator",
-		Code_Bank:    "test",
-		Pay_Phone:    "00000000000",
-		Payment_Card: "test",
-		Status:       &isTrue,
+		FirstName:   "test",
+		LastName:    "test",
+		Email:       "test@gmail.com",
+		Phone:       "test",
+		Permissions: "administrator",
+		Status:      &isTrue,
 	}
 )
 

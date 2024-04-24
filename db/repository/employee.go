@@ -42,9 +42,9 @@ func (e *employee) SearchEmployeeByID(ctx context.Context, id uuid.UUID) (dtos.E
 
 	empl := &models.Employee{}
 
-	if err := e.db.WithContext(ctx).Table("employees e").
-		Where("e.id=?", id).Not("e.deleted=?", true).
-		Select("e.id, e.first_name, e.last_name, e.username, e.email, e.phone, e.password, e.permissions, e.confirmed_email, e.code_bank, e.pay_phone, e.payment_card, e.status, e.created_by, e.updated_by, e.created_at, e.updated_at").
+	if err := e.db.WithContext(ctx).Table("employees").
+		Where("id=?", id).Not("deleted=?", true).
+		Select("*").
 		Scan(empl).Error; err != nil {
 		return dtos.EmployeeResponse{}, err
 	}
@@ -56,9 +56,9 @@ func (e *employee) SearchEmployeeByEmail(ctx context.Context, email string) (dto
 
 	empl := models.Employee{}
 
-	if err := e.db.WithContext(ctx).Table("employees e").
-		Where("e.email=?", email).Not("e.deleted=?", true).
-		Select("e.id, e.first_name, e.last_name, e.username, e.email, e.phone, e.permissions, e.confirmed_email, e.code_bank, e.pay_phone, e.payment_card, e.status, e.created_by, e.updated_by, e.created_at, e.updated_at").
+	if err := e.db.WithContext(ctx).Table("employees").
+		Where("email=?", email).Not("deleted=?", true).
+		Select("*").
 		Scan(&empl).Error; err != nil {
 		return dtos.EmployeeResponse{}, err
 	}
@@ -70,9 +70,9 @@ func (e *employee) SearchEmployeeByEmailAndNotID(ctx context.Context, id uuid.UU
 
 	empl := models.Employee{}
 
-	if err := e.db.WithContext(ctx).Table("employees e").
-		Where("e.email=?", email).Not("id=?", id).Not("e.deleted=?", true).
-		Select("e.id, e.first_name, e.last_name, e.username, e.email, e.phone, e.permissions, e.confirmed_email, e.code_bank, e.pay_phone, e.payment_card, e.status, e.created_by, e.updated_by, e.created_at, e.updated_at").
+	if err := e.db.WithContext(ctx).Table("employees").
+		Where("email=?", email).Not("id=?", id).Not("deleted=?", true).
+		Select("*").
 		Scan(&empl).Error; err != nil {
 		return dtos.EmployeeResponse{}, err
 	}
@@ -84,9 +84,9 @@ func (e *employee) SearchAllEmployees(ctx context.Context) (dtos.Employees, erro
 
 	empl := models.Employees{}
 
-	if err := e.db.WithContext(ctx).Table("employees e").
-		Where("e.deleted=?", false).
-		Select("e.id, e.first_name, e.last_name, e.username, e.email, e.phone, e.permissions, e.confirmed_email, e.code_bank, e.pay_phone, e.payment_card, e.status, e.created_by, e.updated_by, e.created_at, e.updated_at").
+	if err := e.db.WithContext(ctx).Table("employees").
+		Where("deleted=?", false).
+		Select("id, first_name, last_name, username, email, phone, permissions, confirmed_email, status, created_at, updated_at").
 		Scan(&empl).Error; err != nil {
 		return dtos.Employees{}, err
 	}
@@ -113,7 +113,7 @@ func (e *employee) ActivateEmail(ctx context.Context, id, pass string) error {
 
 func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID, idToken string) error {
 
-	if err := e.db.WithContext(ctx).Table("employees").Where("id=?", id).Updates(map[string]interface{}{"deleted": true, "deleted_by": idToken, "deleted_at": time.Now()}).Error; err != nil {
+	if err := e.db.WithContext(ctx).Table("employees").Where("id=?", id).Updates(map[string]interface{}{"deleted": true, "deleted_at": time.Now()}).Error; err != nil {
 		return err
 	}
 

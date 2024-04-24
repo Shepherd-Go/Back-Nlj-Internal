@@ -33,7 +33,7 @@ func NewServiceEmployee(repoEmployee repository.Employee, managePass utils.Passw
 
 func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error {
 
-	id := ctx.Value("id").(string)
+	//_ := ctx.Value("id").(string)
 
 	emplModel, err := e.repoEmployee.SearchEmployeeByEmail(ctx, empl.Email)
 	if err != nil {
@@ -51,8 +51,6 @@ func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmploye
 	if err = parsePermissions(&empl.Permissions); err != nil {
 		return echo.NewHTTPError(http.StatusConflict, entity.Response{Message: err.Error()})
 	}
-
-	empl.Created_by, empl.Updated_by = id, id
 
 	buildEmployee := models.Employee{}
 	buildEmployee.BuildCreateEmployeeModel(empl)
@@ -77,8 +75,6 @@ func (e *employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 }
 
 func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.UpdateEmployee) error {
-
-	idToken := ctx.Value("id").(string)
 
 	emplModel, err := e.repoEmployee.SearchEmployeeByID(ctx, id)
 	if err != nil {
@@ -105,7 +101,6 @@ func (e *employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.
 	}
 
 	empl.ID = id
-	empl.Updated_by = idToken
 	buildModelEmploye := models.Employee{}
 	buildModelEmploye.BuildUpdatedEmployeeModel(empl)
 
@@ -142,9 +137,9 @@ func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID) error {
 
 func parsePermissions(permissions *string) error {
 	switch *permissions {
-	case "administrator":
+	case "administrador":
 		*permissions = "1"
-	case "seller":
+	case "vendedor":
 		*permissions = "2"
 	default:
 		return errors.New("send permissions do not exist")

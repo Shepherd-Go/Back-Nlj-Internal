@@ -54,7 +54,7 @@ func (e *tokenMiddleware) Administrator(next echo.HandlerFunc) echo.HandlerFunc 
 
 		permissions := ctx.Value("permissions")
 
-		if permissions != "administrator" {
+		if permissions != "administrador" {
 			return echo.NewHTTPError(http.StatusUnauthorized, entity.Response{Message: "unauthorized"})
 		}
 

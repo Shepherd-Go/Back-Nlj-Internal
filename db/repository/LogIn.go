@@ -26,7 +26,7 @@ func (e *logIn) SearchEmployeByEmailOrUsername(ctx context.Context, identifier s
 
 	if err := e.db.WithContext(ctx).Table("employees").
 		Where("username=?", identifier).Or("email=?", identifier).Not("deleted=?", true).
-		Select("id, first_name, last_name, password, permissions, confirmed_email, status").
+		Select("id, first_name, last_name, email, password, permissions, confirmed_email, status").
 		Scan(&empl).Error; err != nil {
 		return dtos.Session{}, err
 	}
