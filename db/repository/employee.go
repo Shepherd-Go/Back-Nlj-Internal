@@ -18,6 +18,7 @@ type Employee interface {
 	SearchAllEmployees(ctx context.Context) (dtos.Employees, error)
 	UpdateEmployee(ctx context.Context, empl models.Employee, id uuid.UUID) error
 	ActivateEmail(ctx context.Context, id, pass string) error
+	ForgotPassword(ctx context.Context, id uuid.UUID, pass string) error
 	DeleteEmployee(ctx context.Context, id uuid.UUID, idToken string) error
 }
 
@@ -105,6 +106,14 @@ func (e *employee) UpdateEmployee(ctx context.Context, empl models.Employee, id 
 
 func (e *employee) ActivateEmail(ctx context.Context, id, pass string) error {
 	if err := e.db.WithContext(ctx).Table("employees").Where("id=?", id).Updates(map[string]interface{}{"confirmed_email": true, "password": pass}).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (e *employee) ForgotPassword(ctx context.Context, id uuid.UUID, pass string) error {
+	if err := e.db.WithContext(ctx).Table("employees").Where("id=?", id).Updates(map[string]interface{}{"confirmed_email": false, "password": pass}).Error; err != nil {
 		return err
 	}
 

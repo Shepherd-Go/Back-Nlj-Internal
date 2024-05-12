@@ -15,6 +15,7 @@ type Employee interface {
 	GetEmployees(c echo.Context) error
 	UpdateEmployee(c echo.Context) error
 	DeleteEmployee(c echo.Context) error
+	ForgotPassword(c echo.Context) error
 }
 
 type employee struct {
@@ -102,4 +103,25 @@ func (e *employee) DeleteEmployee(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, entity.Response{Message: "employee deleted successfully.!!"})
+}
+
+func (e *employee) ForgotPassword(c echo.Context) error {
+
+	ctx := c.Request().Context()
+
+	email := dtos.ForgotPassword{}
+
+	if err := c.Bind(&email); err != nil {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})
+	}
+
+	if err := email.Validate(); err != nil {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: err.Error()})
+	}
+
+	if err := e.emplService.ForgotPassword(ctx, email.Email); err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, entity.Response{Message: "temporary password sent to email"})
 }

@@ -52,6 +52,24 @@ func (_m *Employee) DeleteEmployee(ctx context.Context, id uuid.UUID) error {
 	return r0
 }
 
+// ForgotPassword provides a mock function with given fields: ctx, email
+func (_m *Employee) ForgotPassword(ctx context.Context, email string) error {
+	ret := _m.Called(ctx, email)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ForgotPassword")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = rf(ctx, email)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // GetEmployees provides a mock function with given fields: ctx
 func (_m *Employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 	ret := _m.Called(ctx)

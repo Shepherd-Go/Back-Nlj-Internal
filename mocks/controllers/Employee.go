@@ -48,6 +48,24 @@ func (_m *Employee) DeleteEmployee(c echo.Context) error {
 	return r0
 }
 
+// ForgotPassword provides a mock function with given fields: c
+func (_m *Employee) ForgotPassword(c echo.Context) error {
+	ret := _m.Called(c)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ForgotPassword")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(echo.Context) error); ok {
+		r0 = rf(c)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // GetEmployees provides a mock function with given fields: c
 func (_m *Employee) GetEmployees(c echo.Context) error {
 	ret := _m.Called(c)

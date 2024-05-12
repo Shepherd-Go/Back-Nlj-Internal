@@ -14,6 +14,11 @@ func (_m *SendEmail) EmployeeRegistered(email string, first_name string, usernam
 	_m.Called(email, first_name, username, password)
 }
 
+// ForgotPassword provides a mock function with given fields: email, pass
+func (_m *SendEmail) ForgotPassword(email string, pass string) {
+	_m.Called(email, pass)
+}
+
 // NewSendEmail creates a new instance of SendEmail. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewSendEmail(t interface {

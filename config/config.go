@@ -16,10 +16,11 @@ var (
 )
 
 type Config struct {
-	Server   Server   `validate:"required" mapstructure:"server"`
-	JWT      JWT      `validate:"required" mapstructure:"jwt"`
-	Database Database `validate:"required" mapstructure:"database"`
-	Email    Email    `validate:"required" mapstructure:"email"`
+	Server     Server     `validate:"required" mapstructure:"server"`
+	JWT        JWT        `validate:"required" mapstructure:"jwt"`
+	DatabasePG DatabasePG `validate:"required" mapstructure:"databasepg"`
+	DatabaseMG DatabaseMG `validate:"required" mapstructure:"databasemg"`
+	Email      Email      `validate:"required" mapstructure:"email"`
 }
 
 type Server struct {
@@ -30,12 +31,16 @@ type JWT struct {
 	Key string `validate:"required" mapstructure:"key"`
 }
 
-type Database struct {
+type DatabasePG struct {
 	Host     string `validate:"required" mapstructure:"host"`
 	Port     int    `validate:"required" mapstructure:"port"`
 	User     string `validate:"required" mapstructure:"user"`
 	Password string `validate:"required" mapstructure:"password"`
 	DBName   string `validate:"required" mapstructure:"dbname"`
+}
+
+type DatabaseMG struct {
+	Url string `validate:"required" mapstructure:"url"`
 }
 
 type Email struct {

@@ -28,6 +28,7 @@ func BuildContainer() *dig.Container {
 	_ = Container.Provide(routers.NewRouter)
 
 	_ = Container.Provide(db.NewPostgresConnection)
+	_ = Container.Provide(db.NewMongoConnection)
 
 	_ = Container.Provide(utils.NewHashPassword)
 	_ = Container.Provide(utils.NewJWT)

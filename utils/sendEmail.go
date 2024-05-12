@@ -18,8 +18,13 @@ type DataEmail struct {
 	Password   string
 }
 
+type ForgotPassword struct {
+	Password string
+}
+
 type SendEmail interface {
 	EmployeeRegistered(email, first_name, username, password string)
+	ForgotPassword(email, pass string)
 }
 
 type sendEmail struct{}
@@ -60,5 +65,35 @@ func (s *sendEmail) EmployeeRegistered(email, first_name, username, password str
 	}
 
 	log.Println("Email enviado con exito.!!")
+
+}
+
+func (s *sendEmail) ForgotPassword(email, pass string) {
+
+	fPass := ForgotPassword{
+		Password: pass,
+	}
+
+	t, err := template.ParseFiles("./templates/forgot-password-employeee.html")
+	if err != nil {
+		log.Println(err)
+	}
+
+	body := new(bytes.Buffer)
+	if err := t.Execute(body, fPass); err != nil {
+		log.Println(err)
+	}
+
+	m := gomail.NewMessage()
+	m.SetHeader("From", "nljstore.ecommerce@gmail.com")
+	m.SetHeader("To", email)
+	m.SetHeader("Subject", "¡Recuperación de contraseña | NLJStore!")
+	m.SetBody("text/html", body.String())
+
+	d := gomail.NewDialer("smtp.gmail.com", 587, Email.Email, Email.Password)
+
+	if err := d.DialAndSend(m); err != nil {
+		log.Println(err)
+	}
 
 }

@@ -19,6 +19,7 @@ type Employee interface {
 	GetEmployees(ctx context.Context) (dtos.Employees, error)
 	UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.UpdateEmployee) error
 	DeleteEmployee(ctx context.Context, id uuid.UUID) error
+	ForgotPassword(ctx context.Context, email string) error
 }
 
 type employee struct {
@@ -131,6 +132,30 @@ func (e *employee) DeleteEmployee(ctx context.Context, id uuid.UUID) error {
 	if err := e.repoEmployee.DeleteEmployee(ctx, id, idToken); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
 	}
+
+	return nil
+}
+
+func (e *employee) ForgotPassword(ctx context.Context, email string) error {
+
+	empl, err := e.repoEmployee.SearchEmployeeByEmail(ctx, email)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
+	}
+
+	if empl.ID == uuid.Nil {
+		return echo.NewHTTPError(http.StatusNotFound, entity.Response{Message: "there is no account with this email"})
+	}
+
+	passTemporary := e.managePass.GenerateTemporaryPassword()
+	passAxu := passTemporary
+	e.managePass.HashPassword(&passAxu)
+
+	if err := e.repoEmployee.ForgotPassword(ctx, empl.ID, passAxu); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
+	}
+
+	go e.sendEmail.ForgotPassword(empl.Email, passTemporary)
 
 	return nil
 }

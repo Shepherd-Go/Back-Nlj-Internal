@@ -24,11 +24,11 @@ func (p *pgOptions) getDns() string {
 
 func NewPostgresConnection() *gorm.DB {
 	dns := pgOptions{
-		host:     config.Environments().Database.Host,
-		port:     config.Environments().Database.Port,
-		user:     config.Environments().Database.User,
-		password: config.Environments().Database.Password,
-		dbName:   config.Environments().Database.DBName,
+		host:     config.Environments().DatabasePG.Host,
+		port:     config.Environments().DatabasePG.Port,
+		user:     config.Environments().DatabasePG.User,
+		password: config.Environments().DatabasePG.Password,
+		dbName:   config.Environments().DatabasePG.DBName,
 	}
 
 	dbInstance, err := gorm.Open(postgres.Open(dns.getDns()), &gorm.Config{
