@@ -100,6 +100,24 @@ func (_m *Employee) GetEmployees(ctx context.Context) (dtos.Employees, error) {
 	return r0, r1
 }
 
+// RegisterPaymentMobile provides a mock function with given fields: ctx, paymobile
+func (_m *Employee) RegisterPaymentMobile(ctx context.Context, paymobile dtos.PaymentMobile) error {
+	ret := _m.Called(ctx, paymobile)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RegisterPaymentMobile")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, dtos.PaymentMobile) error); ok {
+		r0 = rf(ctx, paymobile)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // UpdateEmployees provides a mock function with given fields: ctx, id, empl
 func (_m *Employee) UpdateEmployees(ctx context.Context, id uuid.UUID, empl dtos.UpdateEmployee) error {
 	ret := _m.Called(ctx, id, empl)

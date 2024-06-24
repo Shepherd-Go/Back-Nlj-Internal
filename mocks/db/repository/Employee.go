@@ -90,6 +90,24 @@ func (_m *Employee) ForgotPassword(ctx context.Context, id uuid.UUID, pass strin
 	return r0
 }
 
+// RegisterPaymentMobile provides a mock function with given fields: ctx, payMobl
+func (_m *Employee) RegisterPaymentMobile(ctx context.Context, payMobl models.PaymentMobile) error {
+	ret := _m.Called(ctx, payMobl)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RegisterPaymentMobile")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, models.PaymentMobile) error); ok {
+		r0 = rf(ctx, payMobl)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // SearchAllEmployees provides a mock function with given fields: ctx
 func (_m *Employee) SearchAllEmployees(ctx context.Context) (dtos.Employees, error) {
 	ret := _m.Called(ctx)
@@ -193,6 +211,34 @@ func (_m *Employee) SearchEmployeeByID(ctx context.Context, id uuid.UUID) (dtos.
 		r0 = rf(ctx, id)
 	} else {
 		r0 = ret.Get(0).(dtos.EmployeeResponse)
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID) error); ok {
+		r1 = rf(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// SearchPaymentMobileByID provides a mock function with given fields: ctx, id
+func (_m *Employee) SearchPaymentMobileByID(ctx context.Context, id uuid.UUID) (dtos.PaymentMobileResponse, error) {
+	ret := _m.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SearchPaymentMobileByID")
+	}
+
+	var r0 dtos.PaymentMobileResponse
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID) (dtos.PaymentMobileResponse, error)); ok {
+		return rf(ctx, id)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID) dtos.PaymentMobileResponse); ok {
+		r0 = rf(ctx, id)
+	} else {
+		r0 = ret.Get(0).(dtos.PaymentMobileResponse)
 	}
 
 	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID) error); ok {

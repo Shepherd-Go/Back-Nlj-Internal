@@ -34,8 +34,6 @@ func NewServiceEmployee(repoEmployee repository.Employee, managePass utils.Passw
 
 func (e *employee) CreateEmployee(ctx context.Context, empl dtos.RegisterEmployee) error {
 
-	//_ := ctx.Value("id").(string)
-
 	emplModel, err := e.repoEmployee.SearchEmployeeByEmail(ctx, empl.Email)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})

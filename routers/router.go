@@ -9,18 +9,22 @@ import (
 )
 
 type Router struct {
-	server   *echo.Echo
-	health   groups.Health
-	session  groups.Session
-	employee groups.Employee
+	server         *echo.Echo
+	health         groups.Health
+	session        groups.Session
+	employee       groups.Employee
+	paymentMethods groups.PaymentMethods
 }
 
-func NewRouter(server *echo.Echo, health groups.Health, session groups.Session, employee groups.Employee) *Router {
+func NewRouter(
+	server *echo.Echo, health groups.Health, session groups.Session, employee groups.Employee,
+	paymentMethods groups.PaymentMethods) *Router {
 	return &Router{
 		server,
 		health,
 		session,
-		employee}
+		employee,
+		paymentMethods}
 }
 
 func (rtr *Router) Init() {
@@ -43,5 +47,6 @@ func (rtr *Router) Init() {
 	rtr.health.Resource(basePath)
 	rtr.session.Resorce(basePath)
 	rtr.employee.Resource(basePath)
+	rtr.paymentMethods.Resource(basePath)
 
 }
