@@ -11,6 +11,7 @@ import (
 
 type PaymentMethods interface {
 	RegisterPaymentMobile(ctx context.Context, payMobl models.PaymentMobile) error
+	DeletePaymentMobile(ctx context.Context, id uuid.UUID) error
 	SearchPaymentMobileByID(ctx context.Context, id uuid.UUID) (dtos.PaymentMobileResponse, error)
 	SearchPaymentMobileByEmployeeID(ctx context.Context, idEmployee uuid.UUID) (dtos.PaymentMobileResponse, error)
 }
@@ -26,6 +27,17 @@ func NewPaymentMethodsRepository(db *gorm.DB) PaymentMethods {
 func (pmthds *paymentmethods) RegisterPaymentMobile(ctx context.Context, payMobl models.PaymentMobile) error {
 
 	if err := pmthds.db.WithContext(ctx).Table("payment_mobile").Create(&payMobl).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (pmthds *paymentmethods) DeletePaymentMobile(ctx context.Context, id uuid.UUID) error {
+
+	pm := models.PaymentMobile{}
+
+	if err := pmthds.db.WithContext(ctx).Table("payment_mobile").Delete(&pm, id).Error; err != nil {
 		return err
 	}
 

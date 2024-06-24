@@ -16,6 +16,7 @@ import (
 type PaymentMethods interface {
 	RegisterMobilePayment(ctx context.Context, paymobl dtos.PaymentMobile) error
 	SearchAllMobilePayment(ctx context.Context, idEmployee uuid.UUID) (dtos.PaymentMobileResponse, error)
+	DeleteMobilePayment(ctx context.Context, id uuid.UUID) error
 }
 
 type paymentmethods struct {
@@ -84,4 +85,29 @@ func (pmthds *paymentmethods) SearchAllMobilePayment(ctx context.Context, idEmpl
 	}
 
 	return pmethods, nil
+}
+
+func (pmthds *paymentmethods) DeleteMobilePayment(ctx context.Context, id uuid.UUID) error {
+
+	idEmployee := ctx.Value("id").(string)
+
+	payMobile, err := pmthds.SearchAllMobilePayment(ctx, uuid.MustParse(idEmployee))
+	if err != nil {
+		return err
+	}
+
+	if payMobile.ID == uuid.Nil {
+		return echo.NewHTTPError(http.StatusNotFound, entity.Response{Message: "this employee does not have mobile payment registered in the system"})
+	}
+
+	if payMobile.ID != id {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity, entity.Response{Message: "this mobile payment does not belong to this user."})
+	}
+
+	if err := pmthds.repoPaymentMethods.DeletePaymentMobile(ctx, id); err != nil {
+		log.Println(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, entity.Response{Message: "an unexpected error has occurred on the server"})
+	}
+
+	return nil
 }

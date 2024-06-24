@@ -13,6 +13,7 @@ import (
 type PaymentMethods interface {
 	RegisterMobilePayment(c echo.Context) error
 	SearchAllMobilePayment(c echo.Context) error
+	DeleteMobilePayment(c echo.Context) error
 }
 
 type paymentmethods struct {
@@ -62,4 +63,22 @@ func (pmthds *paymentmethods) SearchAllMobilePayment(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, entity.Response{Message: "all mobile payments", Data: pmethods})
 
+}
+
+func (pmthds *paymentmethods) DeleteMobilePayment(c echo.Context) error {
+
+	ctx := c.Request().Context()
+
+	id := c.Param("id")
+
+	idUUID, err := uuid.Parse(id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, entity.Response{Message: "format id invalid"})
+	}
+
+	if err := pmthds.servPaymentMethods.DeleteMobilePayment(ctx, idUUID); err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, entity.Response{Message: "payment mobile deleted successfully.!!"})
 }

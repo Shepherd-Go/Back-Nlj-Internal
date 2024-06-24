@@ -25,5 +25,6 @@ func (e *paymentmethods) Resource(g *echo.Group) {
 
 	groupPath.POST("/mobile-payment", e.paymentMethodsHand.RegisterMobilePayment, e.middlewareJWT.Employee)
 	groupPath.GET("/mobile-payment/all/:id", e.paymentMethodsHand.SearchAllMobilePayment, e.middlewareJWT.Employee)
+	groupPath.DELETE("/mobile-payment/:id", e.paymentMethodsHand.DeleteMobilePayment, e.middlewareJWT.Employee)
 
 }
